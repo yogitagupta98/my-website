@@ -1,10 +1,824 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <title>My Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRARABDHHA ✦ Astrology for the Era</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            cosmic: {
+              900: '#0a0118',
+              800: '#120428',
+              700: '#1a0a3e',
+              600: '#2d1b69',
+              500: '#4c1d95',
+              400: '#7c3aed',
+              300: '#a78bfa',
+              200: '#c4b5fd',
+              100: '#ede9fe',
+            },
+            nebula: {
+              pink: '#ec4899',
+              blue: '#3b82f6',
+              cyan: '#06b6d4',
+              orange: '#f97316',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    ::selection { background: #7c3aed; color: #fff; }
+    body { font-family: 'Inter', sans-serif; background: #0a0118; color: #e2e8f0; overflow-x: hidden; }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #c4b5fd, #ec4899, #06b6d4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-warm {
+      background: linear-gradient(135deg, #f97316, #ec4899, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0118; }
+    ::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #ec4899);
+      transition: all 0.3s; transform: translateX(-50%); border-radius: 1px;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    .form-input {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px; padding: 14px 18px; color: #e2e8f0; font-size: 15px;
+      transition: all 0.3s; width: 100%; outline: none;
+    }
+    .form-input:focus {
+      border-color: #7c3aed; box-shadow: 0 0 20px rgba(124,58,237,0.2);
+      background: rgba(255,255,255,0.08);
+    }
+    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    select.form-input { appearance: none; cursor: pointer; }
+
+    .mobile-menu {
+      transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-menu.open { transform: translateX(0); }
+
+    .toast {
+      transform: translateY(100px); opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .nebula {
+      position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3;
+    }
+
+    .result-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { font-size: 13px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+    .result-value { font-size: 15px; color: #fff; font-weight: 600; text-align: right; max-width: 60%; word-break: break-word; }
+    .fade-in { animation: fadeIn 0.6s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+    .console-panel {
+      background: #0d0d0d; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      font-family: 'Courier New', monospace; font-size: 13px; padding: 16px;
+      max-height: 300px; overflow-y: auto; color: #22c55e;
+    }
+    .console-panel .log-line { margin-bottom: 4px; line-height: 1.5; }
+    .console-panel .log-key { color: #a78bfa; }
+    .console-panel .log-str { color: #fbbf24; }
+    .console-panel .log-label { color: rgba(255,255,255,0.3); }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block; width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff;
+      border-radius: 50%; animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+      border-radius: 999px; font-size: 12px; font-weight: 600;
+    }
+    .status-sent { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+    .status-failed { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+    .status-sending { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+  </style>
 </head>
 <body>
-  <h1>Welcome to My Website</h1>
-  <p>This is my first professional site.</p>
+
+  <!-- NAVIGATION -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-strong">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center">
+          <iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon>
+        </div>
+        <span class="font-bold text-lg gradient-text">PRARABDHHA</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#hero" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Home</a>
+        <a href="#birth-form" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Birth Details</a>
+        <a href="#results" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Results</a>
+      </div>
+      <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass">
+        <iconify-icon icon="lucide:menu" class="text-white text-xl"></iconify-icon>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-cosmic-900/95 backdrop-blur-xl flex flex-col items-center justify-center gap-6">
+    <button id="closeMenu" class="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-lg glass">
+      <iconify-icon icon="lucide:x" class="text-white text-xl"></iconify-icon>
+    </button>
+    <a href="#hero" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Home</a>
+    <a href="#birth-form" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Birth Details</a>
+    <a href="#results" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Results</a>
+  </div>
+
+  <!-- ====== HERO SECTION ====== -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+    <div class="nebula w-[500px] h-[500px] bg-cosmic-400 top-[-100px] left-[-100px]" style="position:absolute;"></div>
+    <div class="nebula w-[400px] h-[400px] bg-nebula-pink top-[200px] right-[-80px]" style="position:absolute;"></div>
+    <div class="nebula w-[300px] h-[300px] bg-nebula-cyan bottom-[50px] left-[30%]" style="position:absolute;"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8">
+          <span class="w-2 h-2 rounded-full bg-nebula-pink"></span>
+          <span class="text-xs font-semibold tracking-wider uppercase text-white/60">✦ Astrology for the Era</span>
+        </div>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6">
+          <span class="text-white">your </span>
+          <span class="gradient-text">cosmic</span><br>
+          <span class="text-white">identity </span>
+          <span class="text-3xl sm:text-4xl lg:text-5xl font-light text-white/40">awaits</span>
+        </h1>
+        <p class="text-lg text-white/50 max-w-md mb-10 leading-relaxed">
+          no cap — the stars literally wrote your personality. dive into your sun, moon & rising signs. 
+          it's giving main character energy ✨
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#birth-form" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cosmic-400 to-nebula-pink text-white font-semibold rounded-2xl hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1">
+            <iconify-icon icon="lucide:star"></iconify-icon>
+            Get Your Reading
+          </a>
+        </div>
+        <div class="flex gap-8 mt-12 pt-8 border-t border-white/10">
+          <div>
+            <div class="text-2xl font-bold gradient-text">12</div>
+            <div class="text-xs text-white/40 mt-1">Zodiac Signs</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold gradient-text">9</div>
+            <div class="text-xs text-white/40 mt-1">Planets</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold gradient-text">∞</div>
+            <div class="text-xs text-white/40 mt-1">Vibes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+      <span class="text-xs text-white/30 tracking-widest uppercase">scroll</span>
+      <iconify-icon icon="lucide:chevron-down" class="text-white/30"></iconify-icon>
+    </div>
+  </section>
+
+  <!-- ====== BIRTH DETAILS FORM ====== -->
+  <section id="birth-form" class="relative py-24 overflow-hidden">
+    <div class="nebula w-[500px] h-[500px] bg-cosmic-400 top-[10%] right-[-150px]" style="position:absolute;opacity:0.12;"></div>
+    <div class="nebula w-[400px] h-[400px] bg-nebula-pink bottom-[5%] left-[-100px]" style="position:absolute;opacity:0.1;"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6">
+      <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-12 reveal">
+          <span class="text-xs font-bold tracking-[0.2em] uppercase text-nebula-orange">✦ Personal Reading</span>
+          <h2 class="text-4xl sm:text-5xl font-black mt-4 tracking-tight text-white">
+            birth<br><span class="gradient-text-warm">details</span>
+          </h2>
+          <p class="text-white/40 mt-4 leading-relaxed max-w-md mx-auto">
+            drop your birth info and we'll calculate your big three — sun, moon, and rising sign. 
+            no kundli charts, just pure cosmic tea ☕
+          </p>
+        </div>
+
+        <form id="birthForm" class="space-y-5 reveal" onsubmit="return handleSubmit(event)">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">First Name *</label>
+              <input type="text" name="firstName" class="form-input" placeholder="your name bestie" required id="fname">
+            </div>
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">Last Name</label>
+              <input type="text" name="lastName" class="form-input" placeholder="optional" id="lname">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-5">
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">Date of Birth *</label>
+              <input type="date" name="dob" class="form-input" required id="dob">
+            </div>
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">Time of Birth *</label>
+              <input type="time" name="tob" class="form-input" required id="tob">
+            </div>
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">Gender</label>
+              <div class="relative">
+                <select name="gender" class="form-input pr-10" id="gender">
+                  <option value="">Select</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Non-binary">Non-binary</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+                <iconify-icon icon="lucide:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none"></iconify-icon>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-sm text-white/50 mb-2 block">Place of Birth *</label>
+            <input type="text" name="pob" class="form-input" placeholder="city, state, country" required id="pob">
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">Email *</label>
+              <input type="email" name="email" class="form-input" placeholder="your@email.com" required id="email">
+            </div>
+            <div>
+              <label class="text-sm text-white/50 mb-2 block">What do you wanna know?</label>
+              <div class="relative">
+                <select name="topic" class="form-input pr-10" id="topic">
+                  <option value="My Big Three">My Big Three ☀️🌙↑</option>
+                  <option value="Love & Relationships">Love & Relationships 💕</option>
+                  <option value="Career & Money">Career & Money 💰</option>
+                  <option value="Personal Growth">Personal Growth 🌱</option>
+                  <option value="All of the above">All of the above 👀</option>
+                </select>
+                <iconify-icon icon="lucide:chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none"></iconify-icon>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-sm text-white/50 mb-2 block">Anything else? (optional)</label>
+            <textarea name="notes" class="form-input resize-none" rows="3" placeholder="tell us what's on your mind..." id="notes"></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn" class="w-full py-4 bg-gradient-to-r from-cosmic-400 via-nebula-pink to-nebula-orange text-white font-bold rounded-2xl hover:shadow-[0_0_50px_rgba(124,58,237,0.4)] transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2 text-lg">
+            <iconify-icon icon="lucide:sparkles" class="submit-icon"></iconify-icon>
+            <span class="submit-text">Reveal My Cosmic Identity</span>
+          </button>
+
+          <p class="text-center text-xs text-white/20">your data stays private. we don't do that weird stuff 🤝</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== RESULTS SECTION ====== -->
+  <section id="results" class="relative py-24 overflow-hidden" style="display:none;">
+    <div class="nebula w-[500px] h-[500px] bg-nebula-cyan top-[10%] left-[-100px]" style="position:absolute;opacity:0.1;"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-nebula-cyan">✦ Submitted Data</span>
+        <h2 class="text-4xl sm:text-5xl font-black mt-4 tracking-tight text-white">
+          your <span class="gradient-text">data</span> captured
+        </h2>
+        <p class="text-white/40 mt-4">here's everything we received from the form</p>
+      </div>
+
+      <!-- Email status -->
+      <div class="text-center mb-10" id="emailStatus"></div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div class="glass-strong rounded-2xl p-6 fade-in">
+          <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
+            <iconify-icon icon="lucide:user" class="text-cosmic-300"></iconify-icon>
+            Form Data
+          </h3>
+          <div id="cleanResults"></div>
+          <button onclick="clearData()" class="mt-6 w-full py-3 glass rounded-xl text-sm text-white/50 hover:text-white hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+            <iconify-icon icon="lucide:trash-2"></iconify-icon>
+            Clear Saved Data
+          </button>
+        </div>
+
+        <div class="fade-in" style="animation-delay: 0.2s;">
+          <div class="glass-strong rounded-2xl p-6 mb-6">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <iconify-icon icon="lucide:terminal" class="text-green-400"></iconify-icon>
+              Console Output
+            </h3>
+            <div class="console-panel" id="consolePanel"></div>
+          </div>
+          <div class="glass-strong rounded-2xl p-6">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <iconify-icon icon="lucide:braces" class="text-nebula-orange"></iconify-icon>
+              Raw JSON
+            </h3>
+            <div class="console-panel" id="jsonPanel" style="color: #e2e8f0; font-size: 12px;"></div>
+            <button onclick="copyJSON()" class="mt-4 w-full py-3 glass rounded-xl text-sm text-white/50 hover:text-white hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+              <iconify-icon icon="lucide:copy"></iconify-icon>
+              Copy JSON to Clipboard
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Setup guide -->
+      <div class="mt-16 glass-strong rounded-2xl p-8 fade-in" style="animation-delay: 0.4s;">
+        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <iconify-icon icon="lucide:settings" class="text-cosmic-300"></iconify-icon>
+          EmailJS Setup Guide
+        </h3>
+        <div class="grid sm:grid-cols-3 gap-6">
+          <div class="glass rounded-xl p-5">
+            <div class="text-2xl mb-3">1️⃣</div>
+            <h4 class="font-bold text-white text-sm mb-2">Create Account</h4>
+            <p class="text-xs text-white/40 leading-relaxed">
+              Go to <span class="text-cosmic-300">emailjs.com</span> → Sign up free → 
+              You get <span class="text-white/70">200 emails/month</span> on the free plan.
+            </p>
+          </div>
+          <div class="glass rounded-xl p-5">
+            <div class="text-2xl mb-3">2️⃣</div>
+            <h4 class="font-bold text-white text-sm mb-2">Get Your Keys</h4>
+            <p class="text-xs text-white/40 leading-relaxed">
+              Dashboard shows your <span class="text-white/70">Public Key</span>, 
+              <span class="text-white/70">Service ID</span>, and 
+              <span class="text-white/70">Template ID</span>. Copy all three.
+            </p>
+          </div>
+          <div class="glass rounded-xl p-5">
+            <div class="text-2xl mb-3">3️⃣</div>
+            <h4 class="font-bold text-white text-sm mb-2">Paste Below</h4>
+            <p class="text-xs text-white/40 leading-relaxed">
+              Find the 3 constants in the <span class="text-cosmic-300">&lt;script&gt;</span> tag at the bottom of this page. 
+              Replace the placeholder values. That's it!
+            </p>
+          </div>
+        </div>
+        <div class="mt-6 glass rounded-xl p-5">
+          <h4 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+            <iconify-icon icon="lucide:mail" class="text-nebula-pink"></iconify-icon>
+            Template Variables (use these in your EmailJS template)
+          </h4>
+          <div class="grid sm:grid-cols-3 gap-3">
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{first_name}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{last_name}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{email}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{dob}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{tob}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{gender}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{birth_place}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{topic}}</code>
+            <code class="text-xs bg-black/30 rounded-lg px-3 py-2 text-cosmic-300">{{notes}}</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA SECTION ====== -->
+  <section class="relative py-24 overflow-hidden">
+    <div class="nebula w-[600px] h-[600px] bg-cosmic-400 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="position:absolute;opacity:0.2;"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center reveal">
+      <div class="glass-strong rounded-3xl p-12 lg:p-16 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cosmic-400 via-nebula-pink to-nebula-cyan"></div>
+        <h2 class="text-4xl sm:text-5xl font-black text-white tracking-tight">
+          ready to see<br><span class="gradient-text">what's written</span><br>in the stars?
+        </h2>
+        <p class="text-white/40 mt-6 max-w-lg mx-auto text-lg">
+          stop scrolling and start knowing. your cosmic blueprint is waiting, bestie.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 mt-10">
+          <a href="#birth-form" class="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-cosmic-400 to-nebula-pink text-white font-bold rounded-2xl hover:shadow-[0_0_50px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1 text-lg">
+            <iconify-icon icon="lucide:sparkles"></iconify-icon>
+            Get My Reading Now
+          </a>
+        </div>
+        <div class="flex justify-center items-center gap-2 mt-6 text-white/20 text-sm">
+          <iconify-icon icon="lucide:shield-check" class="text-cosmic-300"></iconify-icon>
+          free • private • no sign-up needed
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="relative border-t border-white/5 py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div>
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center">
+              <iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon>
+            </div>
+            <span class="font-bold text-lg gradient-text">PRARABDHHA</span>
+          </div>
+          <p class="text-white/30 text-sm leading-relaxed">
+            astrology for the generation that actually gets it. no gatekeeping, no weird jargon — just vibes. ✦
+          </p>
+          <div class="flex gap-3 mt-6">
+            <a href="#" class="w-9 h-9 rounded-lg glass flex items-center justify-center hover:bg-white/10 transition-colors">
+              <iconify-icon icon="lucide:instagram" class="text-white/50 hover:text-white text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg glass flex items-center justify-center hover:bg-white/10 transition-colors">
+              <iconify-icon icon="lucide:twitter" class="text-white/50 hover:text-white text-sm"></iconify-icon>
+            </a>
+            <a href="#" class="w-9 h-9 rounded-lg glass flex items-center justify-center hover:bg-white/10 transition-colors">
+              <iconify-icon icon="lucide:youtube" class="text-white/50 hover:text-white text-sm"></iconify-icon>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-6">Explore</h4>
+          <ul class="space-y-3">
+            <li><a href="#birth-form" class="text-sm text-white/30 hover:text-white transition-colors">Birth Chart</a></li>
+            <li><a href="#results" class="text-sm text-white/30 hover:text-white transition-colors">View Results</a></li>
+            <li><a href="#" class="text-sm text-white/30 hover:text-white transition-colors">Compatibility</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-6">Cosmic Updates</h4>
+          <p class="text-sm text-white/30 mb-4">get weekly horoscopes & cosmic news straight to your inbox 💌</p>
+          <form onsubmit="return handleNewsletter(event)" class="flex gap-2">
+            <input type="email" class="form-input flex-1 text-sm" placeholder="your@email.com" required>
+            <button type="submit" class="px-4 py-3 bg-gradient-to-r from-cosmic-400 to-nebula-pink rounded-xl hover:shadow-[0_0_30px_rgba(124,58,237,0.3)] transition-all flex-shrink-0">
+              <iconify-icon icon="lucide:send" class="text-white text-sm"></iconify-icon>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-xs text-white/20">© 2025 PRARABDHHA. made with ✦ and starlight</p>
+        <div class="flex gap-6">
+          <a href="#" class="text-xs text-white/20 hover:text-white/40 transition-colors">Privacy</a>
+          <a href="#" class="text-xs text-white/20 hover:text-white/40 transition-colors">Terms</a>
+          <a href="#" class="text-xs text-white/20 hover:text-white/40 transition-colors">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] glass-strong rounded-2xl px-6 py-4 flex items-center gap-3 max-w-sm">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-cosmic-400 flex items-center justify-center flex-shrink-0">
+      <iconify-icon icon="lucide:check" class="text-white text-lg"></iconify-icon>
+    </div>
+    <div>
+      <div class="text-sm font-semibold text-white" id="toastTitle">Success!</div>
+      <div class="text-xs text-white/40" id="toastMsg">Your cosmic reading is being prepared ✦</div>
+    </div>
+  </div>
+
+  <script>
+    /*
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  EMAILJS SETUP — REPLACE THESE 3 VALUES WITH YOUR OWN       ║
+    ║                                                          ║
+    ║  1. Go to https://www.emailjs.com                        ║
+    ║  2. Sign up (free = 200 emails/month)                   ║
+    ║  3. Create an Email Service (Gmail, Outlook, etc.)        ║
+    ║  4. Create an Email Template with these variables:        ║
+    ║     {{first_name}} {{last_name}} {{email}} {{dob}}       ║
+    ║     {{tob}} {{gender}} {{birth_place}} {{topic}}         ║
+    ║     {{notes}} {{submitted_at}}                           ║
+    ║  5. Copy your Public Key, Service ID, Template ID below  ║
+    ╚══════════════════════════════════════════════════════════════╝
+    */
+
+    // ─── REPLACE THIS with your EmailJS Public Key ───
+    var EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY_HERE';
+
+    // ─── REPLACE THIS with your EmailJS Service ID ───
+    var EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID_HERE';
+
+    // ─── REPLACE THIS with your EmailJS Template ID ───
+    var EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID_HERE';
+
+    // Initialize EmailJS
+    (function() {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+
+
+    // ====== FORM SUBMIT WITH EMAILJS ======
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      var btn = document.getElementById('submitBtn');
+      var btnText = btn.querySelector('.submit-text');
+      var btnIcon = btn.querySelector('.submit-icon');
+
+      // Grab all field values
+      var data = {
+        firstName:    document.getElementById('fname').value.trim(),
+        lastName:     document.getElementById('lname').value.trim(),
+        dob:          document.getElementById('dob').value,
+        tob:          document.getElementById('tob').value,
+        gender:       document.getElementById('gender').value,
+        pob:          document.getElementById('pob').value.trim(),
+        email:        document.getElementById('email').value.trim(),
+        topic:        document.getElementById('topic').value,
+        notes:        document.getElementById('notes').value.trim(),
+        submittedAt:  new Date().toLocaleString('en-US', {
+          weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        })
+      };
+
+      // Format date nicely
+      var formattedDate = '—';
+      if (data.dob) {
+        var d = new Date(data.dob + 'T00:00:00');
+        formattedDate = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      // Format time
+      var formattedTime = '—';
+      if (data.tob) {
+        var parts = data.tob.split(':');
+        var hr = parseInt(parts[0]);
+        var ampm = hr >= 12 ? 'PM' : 'AM';
+        hr = hr % 12 || 12;
+        formattedTime = hr + ':' + parts[1] + ' ' + ampm;
+      }
+
+      // Build template params for EmailJS
+      var templateParams = {
+        first_name:   data.firstName || '—',
+        last_name:    data.lastName || '—',
+        email:        data.email || '—',
+        dob:          formattedDate,
+        tob:          formattedTime,
+        gender:       data.gender || '—',
+        birth_place:  data.pob || '—',
+        topic:        data.topic || '—',
+        notes:        data.notes || '—',
+        submitted_at: data.submittedAt
+      };
+
+      // ─── Show loading state on button ───
+      btn.disabled = true;
+      btnText.textContent = 'Sending to the stars...';
+      btnIcon.style.display = 'none';
+      var spinner = document.createElement('span');
+      spinner.className = 'spinner';
+      btn.insertBefore(spinner, btnText);
+
+      // ─── Console log ───
+      console.log('======= PRARABDHHA Form Submission =======');
+      console.log(JSON.stringify(data, null, 2));
+      console.log('============================================');
+
+      // ─── Save to localStorage ───
+      localStorage.setItem('prarabdhha_form_data', JSON.stringify(data));
+
+      // ─── Send via EmailJS ───
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+        .then(function(response) {
+          console.log('EmailJS success:', response.status, response.text);
+
+          // Show email sent status
+          showEmailStatus('sent', 'Email sent successfully to ' + data.email);
+
+          showToast('Sent! ✦', 'Your cosmic reading has been emailed.');
+
+          // Reset button
+          resetButton(btn);
+          e.target.reset();
+
+          // Display results
+          displayResults(data, 'sent');
+
+          // Scroll to results
+          setTimeout(function() {
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+          }, 600);
+
+        })
+        .catch(function(error) {
+          console.error('EmailJS error:', error);
+
+          // If keys aren't set, show helpful message
+          var errorMsg = 'Failed to send email.';
+          if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE') {
+            errorMsg = 'EmailJS not configured yet. See the setup guide below. Data saved locally.';
+          } else {
+            errorMsg = 'Email error: ' + (error.text || error.message || 'Unknown error');
+          }
+
+          showEmailStatus('failed', errorMsg);
+          showToast('Saved locally ✦', errorMsg);
+
+          resetButton(btn);
+          e.target.reset();
+
+          // Still display results even if email fails
+          displayResults(data, 'failed');
+
+          setTimeout(function() {
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+          }, 600);
+        });
+
+      return false;
+    }
+
+    function resetButton(btn) {
+      btn.disabled = false;
+      var spinner = btn.querySelector('.spinner');
+      if (spinner) spinner.remove();
+      var btnText = btn.querySelector('.submit-text');
+      var btnIcon = btn.querySelector('.submit-icon');
+      btnText.textContent = 'Reveal My Cosmic Identity';
+      btnIcon.style.display = '';
+    }
+
+    function showEmailStatus(type, message) {
+      var container = document.getElementById('emailStatus');
+      var badgeClass = type === 'sent' ? 'status-sent' : 'status-failed';
+      var icon = type === 'sent' ? 'lucide:check-circle' : 'lucide:alert-circle';
+      container.innerHTML = '<span class="status-badge ' + badgeClass + '">' +
+        '<iconify-icon icon="' + icon + '"></iconify-icon> ' + message + '</span>';
+    }
+
+
+    // ====== DISPLAY RESULTS ======
+    function displayResults(data, emailStatus) {
+      var section = document.getElementById('results');
+      section.style.display = '';
+
+      var formattedDate = '—';
+      if (data.dob) {
+        var d = new Date(data.dob + 'T00:00:00');
+        formattedDate = d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      var formattedTime = '—';
+      if (data.tob) {
+        var parts = data.tob.split(':');
+        var hr = parseInt(parts[0]);
+        formattedTime = (hr % 12 || 12) + ':' + parts[1] + ' ' + (hr >= 12 ? 'PM' : 'AM');
+      }
+
+      var fields = [
+        { label: 'Full Name',     value: (data.firstName + ' ' + data.lastName).trim() || '—' },
+        { label: 'Date of Birth', value: formattedDate },
+        { label: 'Time of Birth', value: formattedTime },
+        { label: 'Gender',        value: data.gender || '—' },
+        { label: 'Birth Place',   value: data.pob || '—' },
+        { label: 'Email',         value: data.email || '—' },
+        { label: 'Topic',         value: data.topic || '—' },
+        { label: 'Notes',         value: data.notes || '—' },
+        { label: 'Submitted',     value: data.submittedAt || '—' },
+      ];
+
+      var cleanHTML = '';
+      fields.forEach(function(f) {
+        cleanHTML += '<div class="result-row"><span class="result-label">' + f.label + '</span><span class="result-value">' + f.value + '</span></div>';
+      });
+      document.getElementById('cleanResults').innerHTML = cleanHTML;
+
+      // Console panel
+      var consoleLines = '<div class="log-line log-label">// Data logged to browser Console (F12)</div>';
+      consoleLines += '<div class="log-line"><span class="log-label">const </span>formData = <span class="log-label">{</span></div>';
+      Object.keys(data).forEach(function(key) {
+        var val = String(data[key]);
+        if (val.length > 40) val = val.substring(0, 40) + '...';
+        consoleLines += '<div class="log-line">  <span class="log-key">' + key + '</span>: <span class="log-str">"' + val + '"</span>,</div>';
+      });
+      consoleLines += '<div class="log-line"><span class="log-label">}</span>;</div>';
+      document.getElementById('consolePanel').innerHTML = consoleLines;
+
+      // Raw JSON
+      document.getElementById('jsonPanel').textContent = JSON.stringify(data, null, 2);
+    }
+
+    function copyJSON() {
+      var data = localStorage.getItem('prarabdhha_form_data');
+      if (!data) { showToast('Nothing to copy', 'Submit the form first.'); return; }
+      navigator.clipboard.writeText(data).then(function() {
+        showToast('Copied! 📋', 'JSON copied to clipboard.');
+      });
+    }
+
+    function clearData() {
+      localStorage.removeItem('prarabdhha_form_data');
+      document.getElementById('results').style.display = 'none';
+      showToast('Cleared! 🗑️', 'Saved form data has been removed.');
+    }
+
+    // ====== LOAD SAVED DATA ON PAGE LOAD ======
+    (function() {
+      var saved = localStorage.getItem('prarabdhha_form_data');
+      if (saved) {
+        try { displayResults(JSON.parse(saved), null); } catch(e) {}
+      }
+    })();
+
+    // ====== TOAST ======
+    function showToast(title, msg) {
+      var toast = document.getElementById('toast');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 4000);
+    }
+
+    function handleNewsletter(e) {
+      e.preventDefault();
+      showToast('Subscribed! 💌', 'Weekly cosmic updates are coming your way.');
+      e.target.reset();
+      return false;
+    }
+
+    // ====== MOBILE MENU ======
+    document.getElementById('menuBtn').addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.add('open');
+    });
+    document.getElementById('closeMenu').addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.remove('open');
+    });
+    document.querySelectorAll('.mobile-link').forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.getElementById('mobileMenu').classList.remove('open');
+      });
+    });
+
+    // ====== SCROLL REVEAL ======
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+    // ====== ACTIVE NAV ======
+    var sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', function() {
+      var current = '';
+      sections.forEach(function(section) {
+        if (section.style.display === 'none') return;
+        var top = section.offsetTop - 100;
+        if (window.scrollY >= top) current = section.getAttribute('id');
+      });
+      document.querySelectorAll('.nav-link').forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
