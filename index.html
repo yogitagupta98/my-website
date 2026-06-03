@@ -48,7 +48,7 @@
     .saturn-ring-el{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotateX(65deg);border:2px solid rgba(210,180,140,0.4);border-radius:50%}
     @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-    /* ── Firebase Booking Notification Toast ── */
+    
     .booking-toast{position:fixed;bottom:28px;right:28px;z-index:9999;max-width:310px;width:100%;background:rgba(12,3,28,0.97);border:1px solid rgba(124,58,237,0.45);border-radius:20px;padding:0;transform:translateY(120px);opacity:0;pointer-events:none;transition:all 0.45s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 50px rgba(124,58,237,0.18),0 8px 32px rgba(0,0,0,0.5);}
     .booking-toast.show{transform:translateY(0);opacity:1;pointer-events:auto;}
     .booking-toast .toast-bar{height:3px;width:100%;background:linear-gradient(90deg,#7c3aed,#ec4899,#06b6d4);border-radius:20px 20px 0 0;}
@@ -116,16 +116,7 @@
       <div style="display:inline-block;padding:12px;background:#fff;border-radius:16px;box-shadow:0 0 50px rgba(124,58,237,0.12);margin-bottom:16px;"><img src="https://codewords-uploads.s3.amazonaws.com/runtime_v2/33583d194f0f48ebb5fed17a3b69c87043415197e12941e19de6fece55d4a007/Screenshot_1.png" alt="QR" style="width:200px;height:200px;object-fit:contain;border-radius:8px;"></div>
       <p style="color:#fff;font-weight:600;font-size:16px;margin-bottom:4px;">Scan to Pay</p>
       <p style="color:rgba(255,255,255,0.25);font-size:12px;margin-bottom:20px;">Google Pay &#8226; PhonePe &#8226; Paytm &#8226; any UPI app</p>
-      <!-- Auto payment detection monitor -->
-      <div id="paymentMonitor" style="margin-bottom:16px;padding:14px 16px;border-radius:14px;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.2);display:flex;align-items:center;gap:12px;">
-        <div style="width:10px;height:10px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:toastPulse 1.2s ease-in-out infinite;"></div>
-        <div style="text-align:left;">
-          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em;">Auto-detecting payment</div>
-          <div style="font-size:13px;color:#4ade80;font-weight:600;">Monitoring bank SMS for <span id="monitorAmt"></span>...</div>
-        </div>
-      </div>
-      <!-- Hidden trigger button — fired automatically by auto-detect only -->
-      <button id="sendEmailBtn" style="display:none;"></button>
+      <button id="sendEmailBtn" style="width:100%;padding:14px;border-radius:50px;background:linear-gradient(135deg,#a78bfa,#ec4899);color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer;margin-top:16px;margin-bottom:8px;">✅ Payment Done — Confirm Booking</button>
       <div id="emailError"></div>
       <button id="closeQR" style="width:100%;padding:10px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer;margin-top:10px;">Cancel</button>
     </div>
@@ -158,7 +149,21 @@
       storedName=document.getElementById('fName').value;storedEmail=document.getElementById('fEmail').value;storedPhone=document.getElementById('fPhone').value;storedDob=document.getElementById('fDob').value;storedTob=document.getElementById('fTob').value;storedPlace=document.getElementById('fPlace').value;storedGender=document.getElementById('fGender').value;
       var qTexts=[];document.querySelectorAll('#questionsBox textarea').forEach(function(t,i){if(t.value)qTexts.push('Q'+(i+1)+': '+t.value);});storedQuestions=qTexts.join('\n');
       document.getElementById('qServiceText').textContent=curService+' \u2014 '+curPlan;document.getElementById('qAmountText').textContent=fmt(curAmount);
-      document.getElementById('stepForm').style.display='none';document.getElementById('stepQR').style.display='block';document.getElementById('stepDone').style.display='none';startPaymentPolling(curAmount);
+      document.getElementById('stepForm').style.display='none';document.getElementById('stepQR').style.display='block';document.getElementById('stepDone').style.display='none';
+      // ── Send booking details to astrologer immediately when customer proceeds to pay ──
+      emailjs.send('service_pu1auin','template_by2ekok',{
+        name:storedName||'Customer',
+        email:storedEmail,
+        phone:storedPhone,
+        gender:storedGender,
+        dob:storedDob,
+        tob:storedTob,
+        place:storedPlace,
+        service:curService,
+        plan:curPlan,
+        amount:fmt(curAmount),
+        questions:storedQuestions
+      });
       document.getElementById('emailError').style.display='none';document.getElementById('sendEmailBtn').style.display='flex';
       document.querySelector('.modal-box').scrollTop=0;
     });
@@ -507,168 +512,8 @@
     </div>
   </div>
 
-  <script>
-  /* ═══════════════════════════════════════════════════
-     PRARABBDHA — Firebase Real-time Booking Notifications
-     Uses REST API (no SDK needed) — test mode database
-  ═══════════════════════════════════════════════════ */
-  (function(){
-    var FB = 'https://my-web-cbe5e-default-rtdb.asia-southeast1.firebasedatabase.app';
-    var lastTs = Date.now();
+  
 
-    /* Show toast notification */
-    function showToast(b){
-      document.getElementById('toastName').textContent    = b.name    || 'Customer';
-      document.getElementById('toastService').textContent = (b.service||'') + (b.plan ? ' — ' + b.plan : '');
-      document.getElementById('toastAmount').textContent  = b.amount  || '';
-      var t = document.getElementById('bookingToast');
-      t.classList.add('show');
-      clearTimeout(t._timer);
-      t._timer = setTimeout(function(){ t.classList.remove('show'); }, 9000);
-    }
-
-    /* Write booking to Firebase when confirmed */
-    window.writeBookingToFirebase = function(data){
-      fetch(FB + '/bookings.json', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-          name:      data.name,
-          service:   data.service,
-          plan:      data.plan,
-          amount:    data.amount,
-          phone:     data.phone,
-          timestamp: Date.now()
-        })
-      }).catch(function(){});
-    };
-
-    /* Poll Firebase every 5 seconds for new bookings */
-    function pollBookings(){
-      fetch(FB + '/bookings.json')
-        .then(function(r){ return r.json(); })
-        .then(function(data){
-          if(!data) return;
-          var entries = Object.values(data);
-          entries.forEach(function(b){
-            if(b && b.timestamp && b.timestamp > lastTs){
-              showToast(b);
-            }
-          });
-          /* update lastTs to newest */
-          var newest = Math.max.apply(null, entries.map(function(b){ return b.timestamp||0; }));
-          if(newest > lastTs) lastTs = newest;
-        })
-        .catch(function(){});
-    }
-
-    /* Start polling after 3s delay */
-    setTimeout(function(){
-      pollBookings();
-      setInterval(pollBookings, 5000);
-    }, 3000);
-
-  })();
-  /* ═══════════════════════════════════════════════════ */
-  </script>
-
-  <script>
-  /* ═══════════════════════════════════════════════════════
-     PRARABBDHA — UPI Payment Auto-Verification via IFTTT
-     Flow: UPI Pay → Bank SMS → IFTTT → Firebase → Auto-confirm
-  ═══════════════════════════════════════════════════════ */
-  (function(){
-    var FB = 'https://my-web-cbe5e-default-rtdb.asia-southeast1.firebasedatabase.app';
-    var pollTimer   = null;
-    var seenKeys    = {};   /* keys already in Firebase when polling starts */
-    var initialized = false;
-    var targetAmt   = 0;
-
-    /* ── Check if SMS text contains the expected amount ── */
-    function matchesAmount(msg, amt) {
-      if (!msg || !amt) return false;
-      var s = msg.toString();
-      var a = amt.toString();
-      /* match plain number, Rs., INR, ₹ variants */
-      return s.indexOf(a) !== -1 ||
-             s.indexOf('Rs.' + a) !== -1 ||
-             s.indexOf('INR ' + a) !== -1 ||
-             s.indexOf('\u20B9' + a) !== -1 ||
-             s.toLowerCase().indexOf('credited') !== -1 && s.indexOf(a) !== -1;
-    }
-
-    /* ── Auto-confirm: fires emails + shows Step 3 ── */
-    function autoConfirm() {
-      stopPaymentPolling();
-      /* Show confirming state */
-      var mon = document.getElementById('paymentMonitor');
-      if(mon) {
-        mon.style.background = 'rgba(124,58,237,0.1)';
-        mon.style.borderColor = 'rgba(124,58,237,0.3)';
-        mon.innerHTML = '<iconify-icon icon="lucide:loader-2" style="color:#a78bfa;font-size:18px;animation:spin 1s linear infinite;"></iconify-icon><div style="text-align:left;"><div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:3px;">PAYMENT DETECTED</div><div style="font-size:13px;color:#a78bfa;font-weight:600;">Confirming your booking...</div></div>';
-      }
-      /* Trigger the same logic as manual confirm button */
-      var btn = document.getElementById('sendEmailBtn');
-      if(btn) btn.click();
-    }
-
-    /* ── Poll Firebase /payments.json for new entries ── */
-    function poll() {
-      fetch(FB + '/payments.json')
-        .then(function(r){ return r.json(); })
-        .then(function(data){
-          if (!data) return;
-          Object.keys(data).forEach(function(key){
-            var p = data[key];
-            if (!initialized) {
-              /* First poll: mark all existing keys as already seen */
-              seenKeys[key] = true;
-            } else if (!seenKeys[key]) {
-              /* NEW entry appeared since polling started! */
-              seenKeys[key] = true;
-              if (matchesAmount(p.message, targetAmt)) {
-                autoConfirm();
-              }
-            }
-          });
-          initialized = true;
-        })
-        .catch(function(){});
-    }
-
-    /* ── Start polling when QR screen shows ── */
-    window.startPaymentPolling = function(amount) {
-      stopPaymentPolling();          /* clear any existing timer */
-      targetAmt   = amount;
-      initialized = false;
-      seenKeys    = {};
-
-      /* Show amount in monitor UI */
-      var span = document.getElementById('monitorAmt');
-      if(span) span.textContent = '\u20B9' + amount.toLocaleString('en-IN');
-
-      poll(); /* immediate first poll to initialise seenKeys */
-      pollTimer = setInterval(poll, 3000); /* then every 3s */
-
-      /* Auto-timeout after 15 minutes → show manual button prominently */
-      setTimeout(function(){
-        if(pollTimer){
-          stopPaymentPolling();
-          var mon = document.getElementById('paymentMonitor');
-          if(mon) mon.innerHTML = '<iconify-icon icon="lucide:alert-circle" style="color:#f97316;font-size:18px;"></iconify-icon><div style="text-align:left;"><div style="font-size:11px;color:rgba(255,255,255,0.35);">Auto-detect timed out</div><div style="font-size:13px;color:#f97316;font-weight:600;">Please confirm manually below</div></div>';
-          /* Manual button stays hidden — user must wait for payment */
-        }
-      }, 900000); /* 15 min */
-    };
-
-    /* ── Stop polling ── */
-    window.stopPaymentPolling = function() {
-      if(pollTimer){ clearInterval(pollTimer); pollTimer = null; }
-      initialized = false;
-    };
-
-  })();
-  /* ═══════════════════════════════════════════════════════ */
-  </script>
+  
 </body>
 </html>
