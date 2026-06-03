@@ -124,8 +124,8 @@
     <!-- STEP 3: Confirmation -->
     <div id="stepDone" style="padding:28px;padding-top:40px;text-align:center;">
       <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#4ade80,#06b6d4);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(74,222,128,0.3);"><iconify-icon icon="lucide:check" style="color:#fff;font-size:36px;"></iconify-icon></div>
-      <h3 style="color:#fff;font-size:24px;font-weight:900;margin-bottom:8px;">Payment Received!</h3>
-      <p style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:6px;" id="doneGreet"></p>
+      <h3 style="color:#fff;font-size:30px;font-weight:900;margin-bottom:10px;line-height:1.25;">Thank You for<br><span class="gradient-text">Choosing PRARABBDHA.COM</span></h3>
+      <p style="color:rgba(255,255,255,0.45);font-size:14px;margin-bottom:6px;" id="doneGreet"></p>
       <div style="margin:20px auto;max-width:320px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:38px;height:38px;border-radius:10px;background:rgba(124,58,237,0.2);display:flex;align-items:center;justify-content:center;"><iconify-icon icon="lucide:clock" style="color:#a78bfa;font-size:18px;"></iconify-icon></div><div style="text-align:left;"><p style="color:rgba(255,255,255,0.4);font-size:11px;margin:0;">Expected Response</p><p style="color:#fff;font-size:14px;font-weight:700;margin:0;">Within 48 Hours</p></div></div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:38px;height:38px;border-radius:10px;background:rgba(6,182,212,0.2);display:flex;align-items:center;justify-content:center;"><iconify-icon icon="lucide:mail" style="color:#06b6d4;font-size:18px;"></iconify-icon></div><div style="text-align:left;"><p style="color:rgba(255,255,255,0.4);font-size:11px;margin:0;">Confirmation sent to</p><p style="color:#fff;font-size:13px;font-weight:600;margin:0;" id="doneEmail"></p></div></div>
@@ -178,7 +178,7 @@
         document.getElementById('doneGreet').textContent='Thank you, '+(storedName||'there')+'! Your booking is confirmed.';
         writeBookingToFirebase({name:storedName,service:curService,plan:curPlan,amount:fmt(curAmount),phone:storedPhone});
         document.getElementById('doneEmail').textContent=storedEmail;
-        document.getElementById('doneService').textContent=curService+' \u2014 '+curPlan+' \u2014 '+fmt(curAmount);
+        document.getElementById('doneService').textContent=curService+' \u2014 '+curPlan;
         document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='block';
         document.querySelector('.modal-box').scrollTop=0;
         btn.innerHTML='<iconify-icon icon="lucide:check-circle"></iconify-icon> Payment Done \u2014 Confirm Booking';btn.disabled=false;btn.style.opacity='1';
