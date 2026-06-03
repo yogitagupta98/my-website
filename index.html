@@ -187,6 +187,8 @@
         btn.innerHTML='<iconify-icon icon="lucide:check-circle"></iconify-icon> Payment Done \u2014 Confirm Booking';btn.disabled=false;btn.style.opacity='1';
       });
     });
+    function stopPaymentPolling(){/* no-op: payment polling removed in v14 */}
+    function writeBookingToFirebase(data){/* no-op: Firebase integration pending */console.log('[Firebase] Booking data (not yet sent):', JSON.stringify(data));}
     function closeM(){stopPaymentPolling();document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';document.getElementById('stepForm').style.display='block';document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='none';}
     document.getElementById('modalClose').addEventListener('click',closeM);
     document.getElementById('closeQR').addEventListener('click',closeM);
