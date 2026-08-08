@@ -76,8 +76,8 @@
   <div class="nebula" style="width:350px;height:350px;background:#7c3aed;top:40%;left:-10%;opacity:0.15;animation-delay:8s;"></div>
   <div class="nebula" style="width:280px;height:280px;background:#f97316;top:75%;right:-5%;opacity:0.1;animation-delay:12s;"></div>
 
-  <nav class="fixed top-0 left-0 right-0 z-50 glass-strong"><div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><a href="#hero" class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center"><iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon></div><span class="font-bold text-lg gradient-text tracking-wider">PRARABBDHA.COM</span></a><div class="hidden md:flex items-center gap-8"><a href="#hero" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Home</a><a href="#services" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Services</a></div><button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass"><iconify-icon icon="lucide:menu" class="text-white text-xl"></iconify-icon></button></div></nav>
-  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-cosmic-900/95 backdrop-blur-xl flex flex-col items-center justify-center gap-6"><button id="closeMenu" class="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-lg glass"><iconify-icon icon="lucide:x" class="text-white text-xl"></iconify-icon></button><a href="#hero" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Home</a><a href="#services" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Services</a></div>
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-strong"><div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><a href="#hero" class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center"><iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon></div><span class="font-bold text-lg gradient-text tracking-wider">PRARABBDHA.COM</span></a><div class="hidden md:flex items-center gap-8"><a href="#hero" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Home</a><a href="#services" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Services</a><a href="#contact" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Contact</a></div><button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass"><iconify-icon icon="lucide:menu" class="text-white text-xl"></iconify-icon></button></div></nav>
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-cosmic-900/95 backdrop-blur-xl flex flex-col items-center justify-center gap-6"><button id="closeMenu" class="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-lg glass"><iconify-icon icon="lucide:x" class="text-white text-xl"></iconify-icon></button><a href="#hero" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Home</a><a href="#services" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Services</a><a href="#contact" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Contact</a></div>
 
   <section id="hero" class="relative min-h-screen flex items-center overflow-hidden"><canvas id="galaxyCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;"></canvas><div class="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full"><div class="max-w-5xl"><div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 slide-up"><span class="w-2 h-2 rounded-full bg-nebula-pink animate-pulse"></span><span class="text-xs font-semibold tracking-wider uppercase text-white/60">destiny revealed</span></div><div class="flex flex-wrap gap-4 mb-10 slide-up slide-up-d1"><a href="#services" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cosmic-400 to-nebula-pink text-white font-semibold rounded-2xl hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1">Explore Services <iconify-icon icon="lucide:arrow-right"></iconify-icon></a></div><div class="flex gap-8 slide-up slide-up-d2"><div><div class="text-2xl font-bold gradient-text">12</div><div class="text-xs text-white/40 mt-1">Zodiac Signs</div></div><div><div class="text-2xl font-bold gradient-text">9</div><div class="text-xs text-white/40 mt-1">Planets</div></div><div><div class="text-2xl font-bold gradient-text">&#8734;</div><div class="text-xs text-white/40 mt-1">Vibes</div></div></div></div></div><div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce"><span class="text-xs text-white/30 tracking-widest uppercase">scroll</span><iconify-icon icon="lucide:chevron-down" class="text-white/30"></iconify-icon></div></section>
 
@@ -87,6 +87,53 @@
     <div class="glass rounded-2xl p-8 group hover:border-cosmic-300/30 transition-all hover:-translate-y-1"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cosmic-300/20 to-cosmic-400/10 flex items-center justify-center mb-5"><iconify-icon icon="lucide:phone" class="text-cosmic-300 text-2xl"></iconify-icon></div><h3 class="text-xl font-bold text-white mb-2">Consultation Call</h3><p class="text-sm text-white/40 leading-relaxed mb-5">live call to decode your birth chart.</p><div class="space-y-3"><button data-service="Consultation Call" data-plan="1 Question" data-amount="500" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-cosmic-300/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">1 Question</span><span class="text-sm font-bold text-cosmic-300">&#8377;500 &#8594;</span></button><button data-service="Consultation Call" data-plan="2 Questions" data-amount="1000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-cosmic-300/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">2 Questions</span><span class="text-sm font-bold text-cosmic-300">&#8377;1,000 &#8594;</span></button><button data-service="Consultation Call" data-plan="3 Questions" data-amount="1500" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-cosmic-300/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">3 Questions</span><span class="text-sm font-bold text-cosmic-300">&#8377;1,500 &#8594;</span></button></div></div>
     <div class="glass rounded-2xl p-8 group hover:border-nebula-pink/30 transition-all hover:-translate-y-1"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-nebula-pink/20 to-cosmic-400/10 flex items-center justify-center mb-5"><iconify-icon icon="lucide:video" class="text-nebula-pink text-2xl"></iconify-icon></div><h3 class="text-xl font-bold text-white mb-2">Virtual Meeting</h3><p class="text-sm text-white/40 leading-relaxed mb-5">face-to-face virtual cosmic guidance.</p><div class="space-y-3"><button data-service="Virtual Meeting" data-plan="1 Question" data-amount="1000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-pink/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">1 Question</span><span class="text-sm font-bold text-nebula-pink">&#8377;1,000 &#8594;</span></button><button data-service="Virtual Meeting" data-plan="2 Questions" data-amount="2000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-pink/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">2 Questions</span><span class="text-sm font-bold text-nebula-pink">&#8377;2,000 &#8594;</span></button><button data-service="Virtual Meeting" data-plan="3 Questions" data-amount="3000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-pink/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">3 Questions</span><span class="text-sm font-bold text-nebula-pink">&#8377;3,000 &#8594;</span></button></div></div>
   </div></div></section>
+
+  <!-- CONTACT US SECTION -->
+  <section id="contact" class="relative py-24 overflow-hidden">
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <div class="text-center mb-14 reveal">
+        <span class="text-xs font-bold tracking-[0.2em] uppercase text-nebula-pink">Reach Out</span>
+        <h2 class="text-4xl sm:text-5xl font-black mt-4 tracking-tight text-white">contact<br><span class="gradient-text">us</span></h2>
+        <p class="text-white/40 mt-4 leading-relaxed max-w-md mx-auto">have a question before booking? we'd love to hear from you.</p>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-6 reveal">
+        <!-- WhatsApp -->
+        <a href="https://wa.me/919999999999" target="_blank" rel="noopener" class="glass rounded-2xl p-8 flex flex-col items-center text-center group hover:border-[#25d366]/40 hover:-translate-y-1 transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(37,211,102,0.15);">
+            <iconify-icon icon="logos:whatsapp-icon" class="text-3xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">WhatsApp</h3>
+          <p class="text-sm text-white/40 leading-relaxed mb-4">chat with us directly — fastest response.</p>
+          <span class="text-sm font-semibold" style="color:#25d366;">Message us &#8594;</span>
+        </a>
+        <!-- Email -->
+        <a href="mailto:hello@prarabbdha.com" class="glass rounded-2xl p-8 flex flex-col items-center text-center group hover:border-nebula-cyan/40 hover:-translate-y-1 transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-nebula-cyan/20 to-nebula-blue/10 flex items-center justify-center mb-5">
+            <iconify-icon icon="lucide:mail" class="text-nebula-cyan text-2xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Email</h3>
+          <p class="text-sm text-white/40 leading-relaxed mb-4">drop us a message and we'll reply within 24 hours.</p>
+          <span class="text-sm font-semibold text-nebula-cyan">hello@prarabbdha.com</span>
+        </a>
+        <!-- Instagram -->
+        <a href="https://instagram.com/prarabbdha" target="_blank" rel="noopener" class="glass rounded-2xl p-8 flex flex-col items-center text-center group hover:border-nebula-pink/40 hover:-translate-y-1 transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(236,72,153,0.15);">
+            <iconify-icon icon="skill-icons:instagram" class="text-3xl"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Instagram</h3>
+          <p class="text-sm text-white/40 leading-relaxed mb-4">follow us for cosmic updates &amp; daily readings.</p>
+          <span class="text-sm font-semibold text-nebula-pink">@prarabbdha &#8594;</span>
+        </a>
+      </div>
+      <!-- Response time note -->
+      <div class="mt-10 flex justify-center reveal">
+        <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full glass">
+          <span class="w-2 h-2 rounded-full bg-[#4ade80] animate-pulse"></span>
+          <span class="text-sm text-white/50">Typical response time: <span class="text-white/80 font-semibold">within 24 hours</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="relative py-24 overflow-hidden"><div class="relative z-10 max-w-4xl mx-auto px-6 text-center reveal"><div class="glass-strong rounded-3xl p-12 lg:p-16 relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cosmic-400 via-nebula-pink to-nebula-cyan"></div><h2 class="text-4xl sm:text-5xl font-black text-white tracking-tight">ready to see<br><span class="gradient-text">what's written</span><br>in the stars?</h2><p class="text-white/40 mt-6 max-w-lg mx-auto text-lg">stop scrolling and start knowing. your cosmic blueprint is waiting, bestie.</p><div class="flex flex-wrap justify-center gap-4 mt-10"><a href="#services" class="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-cosmic-400 to-nebula-pink text-white font-bold rounded-2xl hover:shadow-[0_0_50px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1 text-lg"><iconify-icon icon="lucide:sparkles"></iconify-icon> Choose a Service</a></div></div></div></section>
   <footer class="relative border-t border-white/5 py-12"><div class="max-w-7xl mx-auto px-6 text-center"><div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center"><iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon></div><span class="font-bold text-lg gradient-text tracking-wider">PRARABBDHA.COM</span></div><p class="text-white/20 text-xs">&#169; 2025 PRARABBDHA.COM</p></div></footer>
@@ -175,8 +222,13 @@
         emailjs.send('service_pu1auin','template_7sls77b',{name:storedName||'Customer',email:storedEmail,phone:storedPhone,service:curService,plan:curPlan,amount:fmt(curAmount)}),
         emailjs.send('service_pu1auin','template_by2ekok',{name:storedName||'Customer',email:storedEmail,phone:storedPhone,gender:storedGender||'Not specified',dob:storedDob,tob:storedTob,place:storedPlace,service:curService,plan:curPlan,amount:fmt(curAmount),questions:storedQuestions||'No questions provided'})
       ]).then(function(){
-        document.getElementById('doneGreet').textContent='Thank you, '+(storedName||'there')+'! Your booking is confirmed.';
-        writeBookingToFirebase({name:storedName,service:curService,plan:curPlan,amount:fmt(curAmount),phone:storedPhone});
+        document.getElementById('doneGreet').textContent='Thank you, '+(storedName||'there')+'! Your booking is confirmed.';        // Show booking toast notification
+        document.getElementById('toastName').textContent=storedName||'Customer';
+        document.getElementById('toastService').textContent=curService+' \u2014 '+curPlan;
+        document.getElementById('toastAmount').textContent=fmt(curAmount);
+        var toast=document.getElementById('bookingToast');
+        toast.classList.add('show');
+        setTimeout(function(){toast.classList.remove('show');},6000);
         document.getElementById('doneEmail').textContent=storedEmail;
         document.getElementById('doneService').textContent=curService+' \u2014 '+curPlan;
         document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='block';
@@ -186,9 +238,7 @@
         document.getElementById('emailError').style.display='block';document.getElementById('emailError').textContent='Could not send email. Please try again.';
         btn.innerHTML='<iconify-icon icon="lucide:check-circle"></iconify-icon> Payment Done \u2014 Confirm Booking';btn.disabled=false;btn.style.opacity='1';
       });
-    });
-    function stopPaymentPolling(){/* no-op: payment polling removed in v14 */}
-    function writeBookingToFirebase(data){/* no-op: Firebase integration pending */console.log('[Firebase] Booking data (not yet sent):', JSON.stringify(data));}
+    });    function stopPaymentPolling(){/* no-op */}
     function closeM(){stopPaymentPolling();document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';document.getElementById('stepForm').style.display='block';document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='none';}
     document.getElementById('modalClose').addEventListener('click',closeM);
     document.getElementById('closeQR').addEventListener('click',closeM);
@@ -512,10 +562,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/919999999999" target="_blank" rel="noopener"
+     style="position:fixed;bottom:88px;right:24px;z-index:9998;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,211,102,0.4);transition:transform 0.2s,box-shadow 0.2s;"
+     onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 32px rgba(37,211,102,0.55)'"
+     onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 24px rgba(37,211,102,0.4)'">
+    <iconify-icon icon="logos:whatsapp-icon" style="font-size:28px;"></iconify-icon>
+  </a>
 
-  
-
-  
 </body>
 </html>
