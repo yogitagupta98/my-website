@@ -1,574 +1,629 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PRARABBDHA.COM</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif']},colors:{cosmic:{900:'#0a0118',800:'#120428',700:'#1a0a3e',600:'#2d1b69',500:'#4c1d95',400:'#7c3aed',300:'#a78bfa',200:'#c4b5fd',100:'#ede9fe'},nebula:{pink:'#ec4899',blue:'#3b82f6',cyan:'#06b6d4',orange:'#f97316'}}}}}</script>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}::selection{background:#7c3aed;color:#fff}body{font-family:'Inter',sans-serif;background:#0a0118;color:#e2e8f0;overflow-x:hidden}
-    .stars-layer{position:fixed;inset:0;pointer-events:none;z-index:0}.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--dur) ease-in-out infinite alternate}@keyframes twinkle{0%{opacity:var(--min-o,0.2);transform:scale(1)}100%{opacity:var(--max-o,1);transform:scale(1.3)}}
-    .nebula{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.3;animation:nebulaDrift 20s ease-in-out infinite alternate;pointer-events:none}@keyframes nebulaDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.1)}100%{transform:translate(-20px,15px) scale(0.95)}}
-    .shooting-star{position:absolute;width:120px;height:2px;background:linear-gradient(90deg,#fff,transparent);animation:shoot 3s ease-in-out infinite;opacity:0}@keyframes shoot{0%{transform:translateX(-200px) translateY(0);opacity:0}5%{opacity:1}15%{transform:translateX(400px) translateY(150px);opacity:0}100%{opacity:0}}
-    .glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1)}.glass-strong{background:rgba(255,255,255,0.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.15)}
-    .gradient-text{background:linear-gradient(135deg,#c4b5fd,#ec4899,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0118}::-webkit-scrollbar-thumb{background:#4c1d95;border-radius:3px}
-    .nav-link{position:relative}.nav-link::after{content:'';position:absolute;bottom:-4px;left:50%;width:0;height:2px;background:linear-gradient(90deg,#7c3aed,#ec4899);transition:all 0.3s;transform:translateX(-50%);border-radius:1px}.nav-link:hover::after,.nav-link.active::after{width:100%}
-    .form-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:12px 16px;color:#e2e8f0;font-size:14px;transition:all 0.3s;width:100%;outline:none}.form-input:focus{border-color:#7c3aed;box-shadow:0 0 20px rgba(124,58,237,0.2);background:rgba(255,255,255,0.08)}.form-input::placeholder{color:rgba(255,255,255,0.3)}select.form-input{appearance:none;cursor:pointer}
-    .mobile-menu{transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1)}.mobile-menu.open{transform:translateX(0)}
-    .reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.4,0,0.2,1)}.reveal.visible{opacity:1;transform:translateY(0)}
-    @keyframes slideUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}.slide-up{animation:slideUp 0.8s ease-out forwards}.slide-up-d1{animation-delay:0.1s;opacity:0}.slide-up-d2{animation-delay:0.2s;opacity:0}
-    .modal-overlay{position:fixed;inset:0;z-index:80;background:rgba(10,1,24,0.88);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.35s;padding:16px;overflow-y:auto}
-    .modal-overlay.active{opacity:1;pointer-events:auto}
-    .modal-box{background:rgba(18,4,40,0.96);border:1px solid rgba(255,255,255,0.12);border-radius:24px;max-width:480px;width:100%;transform:scale(0.92) translateY(16px);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;max-height:90vh;overflow-y:auto}
-    .modal-overlay.active .modal-box{transform:scale(1) translateY(0)}
-    .modal-box .top-bar{position:sticky;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#7c3aed,#ec4899,#06b6d4);z-index:2}
-    .modal-box::-webkit-scrollbar{width:4px}.modal-box::-webkit-scrollbar-thumb{background:#4c1d95;border-radius:2px}
-    #stepQR,#stepDone{display:none}
-    #emailError{display:none;margin-top:12px;padding:12px 16px;border-radius:12px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;font-size:13px;text-align:center;}
-    .float-planet{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
-    @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
-    @keyframes floatX{0%,100%{transform:translateX(0) rotate(0deg)}50%{transform:translateX(12px) rotate(8deg)}}
-    @keyframes orbitFloat{0%{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}100%{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
-    .galaxy{position:absolute;pointer-events:none;z-index:0}
-    .galaxy-core{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,0.25) 0%,rgba(124,58,237,0.08) 40%,transparent 70%);animation:galaxySpin 60s linear infinite}
-    @keyframes galaxySpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-    .galaxy-arm{position:absolute;top:50%;left:50%;width:120%;height:30%;transform-origin:0 50%;border-radius:50%;border:1px solid rgba(167,139,250,0.06);filter:blur(1px)}
-    .mini-solar{position:absolute;pointer-events:none;z-index:1}
-    .mini-sun{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 35%,#fef08a,#fbbf24,#f97316);z-index:2}
-    .mini-orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(255,255,255,0.06);border-radius:50%;transform:translate(-50%,-50%)}
-    .mini-planet-wrap{position:absolute;top:50%;left:50%;border-radius:50%;animation:orbitFloat var(--spd) linear infinite}
-    .mini-dot{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);border-radius:50%;z-index:3}
-    .saturn-deco{position:absolute;pointer-events:none;z-index:1}
-    .saturn-body{border-radius:50%;background:radial-gradient(circle at 30% 30%,#fef9c3,#d2b48c,#a0845c)}
-    .saturn-ring-el{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotateX(65deg);border:2px solid rgba(210,180,140,0.4);border-radius:50%}
-    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-    
-    .booking-toast{position:fixed;bottom:28px;right:28px;z-index:9999;max-width:310px;width:100%;background:rgba(12,3,28,0.97);border:1px solid rgba(124,58,237,0.45);border-radius:20px;padding:0;transform:translateY(120px);opacity:0;pointer-events:none;transition:all 0.45s cubic-bezier(0.4,0,0.2,1);box-shadow:0 0 50px rgba(124,58,237,0.18),0 8px 32px rgba(0,0,0,0.5);}
-    .booking-toast.show{transform:translateY(0);opacity:1;pointer-events:auto;}
-    .booking-toast .toast-bar{height:3px;width:100%;background:linear-gradient(90deg,#7c3aed,#ec4899,#06b6d4);border-radius:20px 20px 0 0;}
-    .booking-toast .toast-body{padding:16px 18px 18px;}
-    .booking-toast .toast-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-    .booking-toast .toast-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:0.08em;}
-    .booking-toast .toast-pulse{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:toastPulse 1.2s ease-in-out infinite;}
-    @keyframes toastPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.4);opacity:0.6;}}
-    .booking-toast .toast-close{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-    .booking-toast .toast-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
-    .booking-toast .toast-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .booking-toast .toast-label{font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:1px;}
-    .booking-toast .toast-value{font-size:13px;color:#fff;font-weight:600;}
-    
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRARABBDHA.COM - Cosmic Astrology & Consultations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cosmic: {
+                            dark: '#030014',
+                            card: 'rgba(20, 15, 38, 0.65)',
+                            border: 'rgba(139, 92, 246, 0.25)',
+                            accent: '#a855f7',
+                            gold: '#fbbf24'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #030014;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(15, 10, 30, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        .glass-strong {
+            background: rgba(22, 16, 45, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #d8b4fe 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-gold {
+            background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #ca8a04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stars-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            opacity: var(--opacity);
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--opacity); transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(0.8); }
+        }
+        .nebula-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
-<body>
-  <div class="stars-layer" id="starsLayer"></div>
-  <div class="stars-layer"><div class="shooting-star" style="top:8%;left:15%;"></div><div class="shooting-star" style="top:22%;left:55%;animation-delay:3s;"></div><div class="shooting-star" style="top:50%;left:5%;animation-delay:7s;"></div><div class="shooting-star" style="top:65%;left:70%;animation-delay:11s;"></div><div class="shooting-star" style="top:85%;left:35%;animation-delay:15s;"></div></div>
-  
-  <div class="galaxy" style="top:-10%;left:50%;width:600px;height:600px;transform:translateX(-50%);opacity:0.4;"><div class="galaxy-core"></div><div class="galaxy-arm" style="transform:rotate(0deg);"></div><div class="galaxy-arm" style="transform:rotate(72deg);"></div><div class="galaxy-arm" style="transform:rotate(144deg);"></div><div class="galaxy-arm" style="transform:rotate(216deg);"></div><div class="galaxy-arm" style="transform:rotate(288deg);"></div></div>
-  <div class="galaxy" style="top:60%;right:-15%;width:400px;height:400px;opacity:0.25;"><div class="galaxy-core" style="background:radial-gradient(circle,rgba(236,72,153,0.2) 0%,rgba(236,72,153,0.05) 40%,transparent 70%);animation-duration:80s;"></div></div>
-  
-  
-  <div class="nebula" style="width:350px;height:350px;background:#7c3aed;top:40%;left:-10%;opacity:0.15;animation-delay:8s;"></div>
-  <div class="nebula" style="width:280px;height:280px;background:#f97316;top:75%;right:-5%;opacity:0.1;animation-delay:12s;"></div>
+<body class="relative selection:bg-purple-500 selection:text-white">
 
-  <nav class="fixed top-0 left-0 right-0 z-50 glass-strong"><div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><a href="#hero" class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center"><iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon></div><span class="font-bold text-lg gradient-text tracking-wider">PRARABBDHA.COM</span></a><div class="hidden md:flex items-center gap-8"><a href="#hero" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Home</a><a href="#services" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Services</a><a href="#contact" class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors">Contact</a></div><button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass"><iconify-icon icon="lucide:menu" class="text-white text-xl"></iconify-icon></button></div></nav>
-  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-cosmic-900/95 backdrop-blur-xl flex flex-col items-center justify-center gap-6"><button id="closeMenu" class="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-lg glass"><iconify-icon icon="lucide:x" class="text-white text-xl"></iconify-icon></button><a href="#hero" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Home</a><a href="#services" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Services</a><a href="#contact" class="mobile-link text-2xl font-semibold text-white/80 hover:text-white transition-colors">Contact</a></div>
+    <div class="stars-layer" id="starsContainer"></div>
 
-  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden"><canvas id="galaxyCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;"></canvas><div class="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full"><div class="max-w-5xl"><div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 slide-up"><span class="w-2 h-2 rounded-full bg-nebula-pink animate-pulse"></span><span class="text-xs font-semibold tracking-wider uppercase text-white/60">destiny revealed</span></div><div class="flex flex-wrap gap-4 mb-10 slide-up slide-up-d1"><a href="#services" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cosmic-400 to-nebula-pink text-white font-semibold rounded-2xl hover:shadow-[0_0_40px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1">Explore Services <iconify-icon icon="lucide:arrow-right"></iconify-icon></a></div><div class="flex gap-8 slide-up slide-up-d2"><div><div class="text-2xl font-bold gradient-text">12</div><div class="text-xs text-white/40 mt-1">Zodiac Signs</div></div><div><div class="text-2xl font-bold gradient-text">9</div><div class="text-xs text-white/40 mt-1">Planets</div></div><div><div class="text-2xl font-bold gradient-text">&#8734;</div><div class="text-xs text-white/40 mt-1">Vibes</div></div></div></div></div><div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce"><span class="text-xs text-white/30 tracking-widest uppercase">scroll</span><iconify-icon icon="lucide:chevron-down" class="text-white/30"></iconify-icon></div></section>
+    <div class="nebula-glow bg-purple-900/30 w-[500px] h-[500px] top-[-100px] left-[-100px]"></div>
+    <div class="nebula-glow bg-indigo-900/20 w-[600px] h-[600px] top-[40%] right-[-150px]"></div>
 
-  <section id="services" class="relative py-24 overflow-hidden"><div class="relative z-10 max-w-5xl mx-auto px-6"><div class="text-center mb-14 reveal"><span class="text-xs font-bold tracking-[0.2em] uppercase text-nebula-cyan">What We Offer</span><h2 class="text-4xl sm:text-5xl font-black mt-4 tracking-tight text-white">our<br><span class="gradient-text">services</span></h2><p class="text-white/40 mt-4 leading-relaxed max-w-md mx-auto">choose your service and click a plan to get started.</p></div><div class="grid sm:grid-cols-2 gap-6 reveal">
-    <div class="glass rounded-2xl p-8 group hover:border-nebula-orange/30 transition-all hover:-translate-y-1"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-nebula-orange/20 to-nebula-pink/10 flex items-center justify-center mb-5"><iconify-icon icon="lucide:mic" class="text-nebula-orange text-2xl"></iconify-icon></div><h3 class="text-xl font-bold text-white mb-2">Voice Note <span class="text-sm font-normal text-white/30">(1 min)</span></h3><p class="text-sm text-white/40 leading-relaxed mb-5">a personal voice note with your cosmic reading.</p><div class="space-y-3"><button data-service="Voice Note" data-plan="1 Question" data-amount="300" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-orange/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">1 Question</span><span class="text-sm font-bold text-nebula-orange">&#8377;300 &#8594;</span></button><button data-service="Voice Note" data-plan="2 Questions" data-amount="500" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-orange/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">2 Questions</span><span class="text-sm font-bold text-nebula-orange">&#8377;500 &#8594;</span></button><button data-service="Voice Note" data-plan="3 Questions" data-amount="800" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-orange/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">3 Questions</span><span class="text-sm font-bold text-nebula-orange">&#8377;800 &#8594;</span></button></div></div>
-    <div class="glass rounded-2xl p-8 group hover:border-nebula-cyan/30 transition-all hover:-translate-y-1"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-nebula-cyan/20 to-nebula-blue/10 flex items-center justify-center mb-5"><iconify-icon icon="lucide:message-circle" class="text-nebula-cyan text-2xl"></iconify-icon></div><h3 class="text-xl font-bold text-white mb-2">Paragraph on WhatsApp / Mail</h3><p class="text-sm text-white/40 leading-relaxed mb-5">detailed written reading delivered to you.</p><div class="space-y-3"><button data-service="WhatsApp/Mail" data-plan="1 Question" data-amount="400" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-cyan/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">1 Question</span><span class="text-sm font-bold text-nebula-cyan">&#8377;400 &#8594;</span></button><button data-service="WhatsApp/Mail" data-plan="2 Questions" data-amount="800" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-cyan/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">2 Questions</span><span class="text-sm font-bold text-nebula-cyan">&#8377;800 &#8594;</span></button><button data-service="WhatsApp/Mail" data-plan="3 Questions" data-amount="1200" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-cyan/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">3 Questions</span><span class="text-sm font-bold text-nebula-cyan">&#8377;1,200 &#8594;</span></button></div></div>
-    <div class="glass rounded-2xl p-8 group hover:border-cosmic-300/30 transition-all hover:-translate-y-1"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cosmic-300/20 to-cosmic-400/10 flex items-center justify-center mb-5"><iconify-icon icon="lucide:phone" class="text-cosmic-300 text-2xl"></iconify-icon></div><h3 class="text-xl font-bold text-white mb-2">Consultation Call</h3><p class="text-sm text-white/40 leading-relaxed mb-5">live call to decode your birth chart.</p><div class="space-y-3"><button data-service="Consultation Call" data-plan="1 Question" data-amount="500" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-cosmic-300/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">1 Question</span><span class="text-sm font-bold text-cosmic-300">&#8377;500 &#8594;</span></button><button data-service="Consultation Call" data-plan="2 Questions" data-amount="1000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-cosmic-300/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">2 Questions</span><span class="text-sm font-bold text-cosmic-300">&#8377;1,000 &#8594;</span></button><button data-service="Consultation Call" data-plan="3 Questions" data-amount="1500" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-cosmic-300/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">3 Questions</span><span class="text-sm font-bold text-cosmic-300">&#8377;1,500 &#8594;</span></button></div></div>
-    <div class="glass rounded-2xl p-8 group hover:border-nebula-pink/30 transition-all hover:-translate-y-1"><div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-nebula-pink/20 to-cosmic-400/10 flex items-center justify-center mb-5"><iconify-icon icon="lucide:video" class="text-nebula-pink text-2xl"></iconify-icon></div><h3 class="text-xl font-bold text-white mb-2">Virtual Meeting</h3><p class="text-sm text-white/40 leading-relaxed mb-5">face-to-face virtual cosmic guidance.</p><div class="space-y-3"><button data-service="Virtual Meeting" data-plan="1 Question" data-amount="1000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-pink/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">1 Question</span><span class="text-sm font-bold text-nebula-pink">&#8377;1,000 &#8594;</span></button><button data-service="Virtual Meeting" data-plan="2 Questions" data-amount="2000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-pink/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">2 Questions</span><span class="text-sm font-bold text-nebula-pink">&#8377;2,000 &#8594;</span></button><button data-service="Virtual Meeting" data-plan="3 Questions" data-amount="3000" class="price-btn w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] cursor-pointer hover:bg-white/[0.08] hover:border-nebula-pink/30 transition-all text-left"><span class="text-sm text-white/70 font-medium">3 Questions</span><span class="text-sm font-bold text-nebula-pink">&#8377;3,000 &#8594;</span></button></div></div>
-  </div></div></section>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-purple-900/30">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-amber-400 flex items-center justify-center shadow-lg shadow-purple-900/50">
+                    <iconify-icon icon="solar:stars-bold-duotone" class="text-white text-xl"></iconify-icon>
+                </div>
+                <span class="text-xl font-bold tracking-wider gradient-text font-serif">PRARABBDHA</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm text-gray-300">
+                <a href="#hero" class="hover:text-purple-400 transition-colors">Home</a>
+                <a href="#about" class="hover:text-purple-400 transition-colors">Our Philosophy</a>
+                <a href="#services" class="hover:text-purple-400 transition-colors">Services</a>
+                <a href="#myths" class="hover:text-purple-400 transition-colors">Myths</a>
+                <a href="#testimonials" class="hover:text-purple-400 transition-colors">Testimonials</a>
+                <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+            </div>
 
-  <!-- CONTACT US SECTION -->
-  <section id="contact" class="relative py-24 overflow-hidden">
-    <div class="relative z-10 max-w-5xl mx-auto px-6">
-      <div class="text-center mb-14 reveal">
-        <span class="text-xs font-bold tracking-[0.2em] uppercase text-nebula-pink">Reach Out</span>
-        <h2 class="text-4xl sm:text-5xl font-black mt-4 tracking-tight text-white">contact<br><span class="gradient-text">us</span></h2>
-        <p class="text-white/40 mt-4 leading-relaxed max-w-md mx-auto">have a question before booking? we'd love to hear from you.</p>
-      </div>
-      <div class="grid sm:grid-cols-3 gap-6 reveal">
-        <!-- WhatsApp -->
-        <a href="https://wa.me/919999999999" target="_blank" rel="noopener" class="glass rounded-2xl p-8 flex flex-col items-center text-center group hover:border-[#25d366]/40 hover:-translate-y-1 transition-all duration-300">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(37,211,102,0.15);">
-            <iconify-icon icon="logos:whatsapp-icon" class="text-3xl"></iconify-icon>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">WhatsApp</h3>
-          <p class="text-sm text-white/40 leading-relaxed mb-4">chat with us directly — fastest response.</p>
-          <span class="text-sm font-semibold" style="color:#25d366;">Message us &#8594;</span>
-        </a>
-        <!-- Email -->
-        <a href="mailto:hello@prarabbdha.com" class="glass rounded-2xl p-8 flex flex-col items-center text-center group hover:border-nebula-cyan/40 hover:-translate-y-1 transition-all duration-300">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-nebula-cyan/20 to-nebula-blue/10 flex items-center justify-center mb-5">
-            <iconify-icon icon="lucide:mail" class="text-nebula-cyan text-2xl"></iconify-icon>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Email</h3>
-          <p class="text-sm text-white/40 leading-relaxed mb-4">drop us a message and we'll reply within 24 hours.</p>
-          <span class="text-sm font-semibold text-nebula-cyan">hello@prarabbdha.com</span>
-        </a>
-        <!-- Instagram -->
-        <a href="https://instagram.com/prarabbdha" target="_blank" rel="noopener" class="glass rounded-2xl p-8 flex flex-col items-center text-center group hover:border-nebula-pink/40 hover:-translate-y-1 transition-all duration-300">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(236,72,153,0.15);">
-            <iconify-icon icon="skill-icons:instagram" class="text-3xl"></iconify-icon>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-2">Instagram</h3>
-          <p class="text-sm text-white/40 leading-relaxed mb-4">follow us for cosmic updates &amp; daily readings.</p>
-          <span class="text-sm font-semibold text-nebula-pink">@prarabbdha &#8594;</span>
-        </a>
-      </div>
-      <!-- Response time note -->
-      <div class="mt-10 flex justify-center reveal">
-        <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full glass">
-          <span class="w-2 h-2 rounded-full bg-[#4ade80] animate-pulse"></span>
-          <span class="text-sm text-white/50">Typical response time: <span class="text-white/80 font-semibold">within 24 hours</span></span>
+            <div class="hidden md:block">
+                <a href="#services" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-sm shadow-lg shadow-purple-600/30 hover:shadow-purple-600/50 hover:scale-[1.02] transition-all">
+                    Explore Services
+                </a>
+            </div>
+
+            <button id="menuBtn" class="md:hidden text-2xl text-gray-200">
+                <iconify-icon icon="solar:hamburger-menu-linear"></iconify-icon>
+            </button>
         </div>
-      </div>
-    </div>
-  </section>
+    </nav>
 
-  <section class="relative py-24 overflow-hidden"><div class="relative z-10 max-w-4xl mx-auto px-6 text-center reveal"><div class="glass-strong rounded-3xl p-12 lg:p-16 relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cosmic-400 via-nebula-pink to-nebula-cyan"></div><h2 class="text-4xl sm:text-5xl font-black text-white tracking-tight">ready to see<br><span class="gradient-text">what's written</span><br>in the stars?</h2><p class="text-white/40 mt-6 max-w-lg mx-auto text-lg">stop scrolling and start knowing. your cosmic blueprint is waiting, bestie.</p><div class="flex flex-wrap justify-center gap-4 mt-10"><a href="#services" class="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-cosmic-400 to-nebula-pink text-white font-bold rounded-2xl hover:shadow-[0_0_50px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1 text-lg"><iconify-icon icon="lucide:sparkles"></iconify-icon> Choose a Service</a></div></div></div></section>
-  <footer class="relative border-t border-white/5 py-12"><div class="max-w-7xl mx-auto px-6 text-center"><div class="flex items-center justify-center gap-2 mb-4"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-400 to-nebula-pink flex items-center justify-center"><iconify-icon icon="lucide:sparkles" class="text-white text-sm"></iconify-icon></div><span class="font-bold text-lg gradient-text tracking-wider">PRARABBDHA.COM</span></div><p class="text-white/20 text-xs">&#169; 2025 PRARABBDHA.COM</p></div></footer>
-
-  <!-- MODAL -->
-  <div id="modalOverlay" class="modal-overlay"><div class="modal-box"><div class="top-bar"></div>
-    <button id="modalClose" style="position:absolute;top:16px;right:16px;z-index:10;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.6);font-size:18px;">&#215;</button>
-
-    <!-- STEP 1: Form -->
-    <div id="stepForm" style="padding:28px;padding-top:40px;">
-      <div style="text-align:center;margin-bottom:20px;"><div style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:50px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);margin-bottom:8px;"><iconify-icon icon="lucide:sparkles" style="color:#a78bfa;font-size:12px;"></iconify-icon><span id="mService" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;">Voice Note</span></div><p style="font-size:14px;color:rgba(255,255,255,0.4);" id="mPlanText">1 Question</p><p class="gradient-text" style="font-size:28px;font-weight:900;margin-top:4px;" id="mAmountText"></p></div>
-      <form id="birthForm" style="display:flex;flex-direction:column;gap:12px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Name *</label><input type="text" class="form-input" placeholder="Your name" required id="fName"></div><div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Phone *</label><input type="tel" class="form-input" placeholder="+91..." required id="fPhone"></div></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Date of Birth *</label><input type="date" class="form-input" required id="fDob"></div><div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Time of Birth *</label><input type="time" class="form-input" required id="fTob"></div></div>
-        <div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Place of Birth *</label><input type="text" class="form-input" placeholder="City, State, Country" required id="fPlace"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Gender</label><select class="form-input" id="fGender"><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select></div><div><label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Email *</label><input type="email" class="form-input" placeholder="you@email.com" required id="fEmail"></div></div>
-        <div id="questionsBox"></div>
-        <button type="submit" style="width:100%;padding:14px;background:linear-gradient(to right,#7c3aed,#ec4899,#f97316);color:#fff;font-weight:700;border-radius:16px;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;"><iconify-icon icon="lucide:arrow-right"></iconify-icon> Proceed to Payment</button>
-      </form>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 z-40 bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center gap-6 text-xl font-medium hidden">
+        <button id="closeMenu" class="absolute top-6 right-6 text-3xl text-gray-400">
+            <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
+        </button>
+        <a href="#hero" class="mobile-link hover:text-purple-400">Home</a>
+        <a href="#about" class="mobile-link hover:text-purple-400">Our Philosophy</a>
+        <a href="#services" class="mobile-link hover:text-purple-400">Services</a>
+        <a href="#myths" class="mobile-link hover:text-purple-400">Myths</a>
+        <a href="#testimonials" class="mobile-link hover:text-purple-400">Testimonials</a>
+        <a href="#contact" class="mobile-link hover:text-purple-400">Contact</a>
     </div>
 
-    <!-- STEP 2: QR -->
-    <div id="stepQR" style="padding:28px;padding-top:40px;text-align:center;">
-      <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:50px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);margin-bottom:8px;"><iconify-icon icon="lucide:check-circle" style="color:#4ade80;font-size:12px;"></iconify-icon><span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;">Details Submitted</span></div>
-      <p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:4px;" id="qServiceText"></p>
-      <p class="gradient-text" style="font-size:36px;font-weight:900;margin-bottom:20px;" id="qAmountText"></p>
-      <div style="display:inline-block;padding:12px;background:#fff;border-radius:16px;box-shadow:0 0 50px rgba(124,58,237,0.12);margin-bottom:16px;"><img src="https://codewords-uploads.s3.amazonaws.com/runtime_v2/33583d194f0f48ebb5fed17a3b69c87043415197e12941e19de6fece55d4a007/Screenshot_1.png" alt="QR" style="width:200px;height:200px;object-fit:contain;border-radius:8px;"></div>
-      <p style="color:#fff;font-weight:600;font-size:16px;margin-bottom:4px;">Scan to Pay</p>
-      <p style="color:rgba(255,255,255,0.25);font-size:12px;margin-bottom:20px;">Google Pay &#8226; PhonePe &#8226; Paytm &#8226; any UPI app</p>
-      <button id="sendEmailBtn" style="width:100%;padding:14px;border-radius:50px;background:linear-gradient(135deg,#a78bfa,#ec4899);color:#fff;font-weight:700;font-size:16px;border:none;cursor:pointer;margin-top:16px;margin-bottom:8px;">✅ Payment Done — Confirm Booking</button>
-      <div id="emailError"></div>
-      <button id="closeQR" style="width:100%;padding:10px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer;margin-top:10px;">Cancel</button>
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-28 pb-20 px-6 z-10">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-purple-500/30 text-purple-300 text-xs font-medium tracking-wide mb-6">
+                <iconify-icon icon="solar:sparkles-bold" class="text-amber-400"></iconify-icon>
+                <span>Destiny Revealed Through Ancient Wisdom</span>
+            </div>
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
+                Understand Your Stars. <br>
+                <span class="gradient-text font-serif">Navigate Your Life.</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                Gain deep astrological clarity and thoughtful guidance to understand life's patterns, prepare for challenges, and move forward with hope.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 text-white font-semibold shadow-xl shadow-purple-900/40 hover:scale-105 transition-all text-center">
+                    Explore Services & Book
+                </a>
+                <a href="#about" class="w-full sm:w-auto px-8 py-4 rounded-2xl glass-panel hover:bg-purple-900/20 text-gray-200 font-semibold transition-all text-center border border-purple-500/20">
+                    Our Philosophy
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Goal & Belief Section -->
+    <section id="about" class="py-24 px-6 relative z-10 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="glass-panel p-8 sm:p-10 rounded-3xl reveal border border-purple-500/20">
+                <div class="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-2xl mb-6">
+                    <iconify-icon icon="solar:compass-bold-duotone"></iconify-icon>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4 gradient-text">Our Goal</h2>
+                <p class="text-gray-300 leading-relaxed mb-6">
+                    At Prarabbdha, our goal is to help you understand the patterns of life and navigate both its gains and challenging phases with greater clarity and resilience. We believe that difficult times are not permanent—time changes, phases pass, and every experience has something to teach us.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    Our team of experienced astrologers studies each chart with precision, care, and sincerity, offering thoughtful predictions and personalised consultations. We strive to guide you in every possible way—not to decide your path for you, but to help you understand it better, prepare for what lies ahead, and move forward with greater confidence and hope. Because knowing what may come can help you face it with a stronger heart.
+                </p>
+            </div>
+
+            <div class="glass-panel p-8 sm:p-10 rounded-3xl reveal border border-amber-500/20 bg-gradient-to-br from-purple-950/40 to-amber-950/20">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center text-amber-400 text-2xl mb-6">
+                    <iconify-icon icon="solar:sun-fog-bold-duotone"></iconify-icon>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-4 gradient-gold">Our Belief</h2>
+                <blockquote class="text-xl italic text-gray-200 font-light mb-6 border-l-2 border-amber-400 pl-4">
+                    "Astrology is not about telling you what you must do. It is about helping you understand what you may encounter, when you may encounter it, and how you can navigate it with greater awareness."
+                </blockquote>
+                <p class="text-gray-300 leading-relaxed">
+                    We steer clear of fear-mongering and fatalism. Every reading is designed to empower you with insight, timing, and conscious choices so you remain the captain of your soul.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 relative z-10 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-purple-400 text-sm font-semibold tracking-wider uppercase mb-3 block">Consultation Offerings</span>
+            <h2 class="text-3xl sm:text-5xl font-bold font-serif mb-4 gradient-text">What We Offer</h2>
+            <p class="text-gray-400">Choose the consultation format that suits your needs best.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between reveal border border-purple-500/20 hover:border-purple-500/50 transition-all">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-purple-600/20 flex items-center justify-center text-purple-400 text-2xl mb-6">
+                        <iconify-icon icon="solar:microphone-bold-duotone"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Voice Note Consultation</h3>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">Receive a detailed voice note addressing your specific questions and chart analysis.</p>
+                </div>
+                <div class="space-y-3">
+                    <button onclick="openModal('Voice Note', 'Detailed Voice Note reading', '499')" class="w-full py-3 rounded-xl bg-purple-600/20 hover:bg-purple-600 text-purple-200 hover:text-white font-medium text-sm transition-all border border-purple-500/30">
+                        ₹499 · Book Now
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between reveal border border-purple-500/20 hover:border-purple-500/50 transition-all">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-2xl mb-6">
+                        <iconify-icon icon="solar:chat-round-dots-bold-duotone"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Paragraph on WhatsApp/Mail</h3>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">Written comprehensive breakdown sent directly to your WhatsApp or email.</p>
+                </div>
+                <div class="space-y-3">
+                    <button onclick="openModal('WhatsApp/Mail Paragraph', 'Written detailed paragraph consultation', '399')" class="w-full py-3 rounded-xl bg-indigo-600/20 hover:bg-indigo-600 text-indigo-200 hover:text-white font-medium text-sm transition-all border border-indigo-500/30">
+                        ₹399 · Book Now
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between reveal border border-purple-500/20 hover:border-purple-500/50 transition-all">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-600/20 flex items-center justify-center text-amber-400 text-2xl mb-6">
+                        <iconify-icon icon="solar:phone-calling-bold-duotone"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Consultation Call</h3>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">One-on-one phone consultation to discuss your horoscope in depth.</p>
+                </div>
+                <div class="space-y-3">
+                    <button onclick="openModal('Consultation Call', 'One-on-one phone consultation', '999')" class="w-full py-3 rounded-xl bg-amber-600/20 hover:bg-amber-600 text-amber-200 hover:text-white font-medium text-sm transition-all border border-amber-500/30">
+                        ₹999 · Book Now
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between reveal border border-purple-500/20 hover:border-purple-500/50 transition-all">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 flex items-center justify-center text-emerald-400 text-2xl mb-6">
+                        <iconify-icon icon="solar:video-frame-bold-duotone"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Virtual Meeting</h3>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">Face-to-face video consultation with live chart screen share and guidance.</p>
+                </div>
+                <div class="space-y-3">
+                    <button onclick="openModal('Virtual Meeting', 'Face-to-face video consultation', '1499')" class="w-full py-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-200 hover:text-white font-medium text-sm transition-all border border-emerald-500/30">
+                        ₹1499 · Book Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Busting Myths Section -->
+    <section id="myths" class="py-24 px-6 relative z-10 max-w-5xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-purple-400 text-sm font-semibold tracking-wider uppercase mb-3 block">Clarity & Truth</span>
+            <h2 class="text-3xl sm:text-5xl font-bold font-serif mb-4 gradient-text">Busting the Myths About Astrology</h2>
+            <p class="text-gray-400">Separating ancient wisdom from common misconceptions.</p>
+        </div>
+
+        <div class="space-y-6">
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl reveal border border-purple-500/20">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex-shrink-0 flex items-center justify-center text-purple-400 font-bold">1</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Myth: Astrology decides your fate.</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed"><strong class="text-purple-300">Reality:</strong> Astrology offers insights into possibilities and patterns—it does not take away your free will. Your choices and actions still matter.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl reveal border border-purple-500/20">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex-shrink-0 flex items-center justify-center text-purple-400 font-bold">2</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Myth: Astrology can predict everything exactly.</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed"><strong class="text-purple-300">Reality:</strong> Astrology is about understanding tendencies, timing, and possibilities. Life is influenced by circumstances, choices, and actions too.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl reveal border border-purple-500/20">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex-shrink-0 flex items-center justify-center text-purple-400 font-bold">3</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Myth: A difficult prediction means something bad will definitely happen.</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed"><strong class="text-purple-300">Reality:</strong> Challenging phases can be understood as periods that require awareness, patience, and preparation. Knowing them in advance can help you navigate them better.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl reveal border border-purple-500/20">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex-shrink-0 flex items-center justify-center text-purple-400 font-bold">4</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Myth: Astrology is only about marriage and career.</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed"><strong class="text-purple-300">Reality:</strong> Astrology can offer perspectives on many areas of life—including relationships, career, finances, personal growth, strengths, challenges, and important life phases.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl reveal border border-purple-500/20">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex-shrink-0 flex items-center justify-center text-purple-400 font-bold">5</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Myth: Astrology is meant to create fear.</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed"><strong class="text-purple-300">Reality:</strong> At Prarabbdha, we believe astrology should create awareness, not fear—helping you understand yourself, prepare for challenges, and make more conscious choices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 px-6 relative z-10 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-purple-400 text-sm font-semibold tracking-wider uppercase mb-3 block">Testimonials</span>
+            <h2 class="text-3xl sm:text-5xl font-bold font-serif mb-4 gradient-text">What Our Clients Say</h2>
+            <p class="text-gray-400">Hear from those who have walked the path with our guidance.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="glass-panel p-8 rounded-3xl reveal border border-purple-500/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-400 mb-4">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">“Clarity when I needed it most”</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">The consultation helped me look at my situation with a much calmer and clearer perspective. The guidance was practical, detailed, and reassuring. I came away feeling more prepared rather than fearful.</p>
+                </div>
+                <div class="text-xs text-purple-400 font-medium">— Client Review</div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl reveal border border-purple-500/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-400 mb-4">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">“Thoughtful and surprisingly precise”</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">The astrologer took the time to understand my concerns and explained everything patiently. What I appreciated most was the balanced approach—no unnecessary fear, just honest guidance and clarity.</p>
+                </div>
+                <div class="text-xs text-purple-400 font-medium">— Client Review</div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl reveal border border-purple-500/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-400 mb-4">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">“Helped me understand my phase better”</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">I was going through a confusing period and needed some direction. The consultation helped me understand what I was experiencing and, more importantly, how to approach it with patience and confidence.</p>
+                </div>
+                <div class="text-xs text-purple-400 font-medium">— Client Review</div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl reveal border border-purple-500/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-400 mb-4">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">“A very personal experience”</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">The reading felt personalised rather than generic. The details, explanations, and timing were presented with so much care. It gave me a different perspective on my life and my choices.</p>
+                </div>
+                <div class="text-xs text-purple-400 font-medium">— Client Review</div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl reveal border border-purple-500/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-400 mb-4">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">“Guidance without creating fear”</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">What stood out to me was the way the difficult aspects were explained. Instead of making me anxious, the consultation helped me prepare mentally and focus on what I could control.</p>
+                </div>
+                <div class="text-xs text-purple-400 font-medium">— Client Review</div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl reveal border border-purple-500/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-amber-400 mb-4">
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-3">“More than just a prediction”</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">The consultation gave me insight into my strengths, challenges, and the phase I was going through. It felt less like being told my future and more like being given a roadmap to navigate it.</p>
+                </div>
+                <div class="text-xs text-purple-400 font-medium">— Client Review</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 relative z-10 max-w-5xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <span class="text-purple-400 text-sm font-semibold tracking-wider uppercase mb-3 block">Get in Touch</span>
+            <h2 class="text-3xl sm:text-5xl font-bold font-serif mb-4 gradient-text">Reach Out</h2>
+            <p class="text-gray-400">Have questions? We are always here to help you navigate your cosmic journey.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <a href="https://whatsapp.com" target="_blank" class="glass-panel p-8 rounded-3xl text-center reveal hover:scale-105 transition-all border border-purple-500/20 block">
+                <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-6">
+                    <iconify-icon icon="solar:chat-square-code-bold-duotone"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">WhatsApp</h3>
+                <p class="text-gray-400 text-sm">Quick chat & support</p>
+            </a>
+
+            <a href="mailto:support@prarabbdha.com" class="glass-panel p-8 rounded-3xl text-center reveal hover:scale-105 transition-all border border-purple-500/20 block">
+                <div class="w-14 h-14 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-3xl mx-auto mb-6">
+                    <iconify-icon icon="solar:letter-bold-duotone"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Email</h3>
+                <p class="text-gray-400 text-sm">support@prarabbdha.com</p>
+            </a>
+
+            <a href="https://instagram.com" target="_blank" class="glass-panel p-8 rounded-3xl text-center reveal hover:scale-105 transition-all border border-purple-500/20 block">
+                <div class="w-14 h-14 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-3xl mx-auto mb-6">
+                    <iconify-icon icon="solar:camera-bold-duotone"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-2">Instagram</h3>
+                <p class="text-gray-400 text-sm">@prarabbdha</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-purple-900/30 text-center text-gray-500 text-sm relative z-10">
+        <p>&copy; 2026 PRARABBDHA.COM. All rights reserved. Designed with cosmic care.</p>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="modalOverlay" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="glass-strong w-full max-w-lg rounded-3xl p-6 sm:p-8 relative border border-purple-500/40">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-2xl text-gray-400 hover:text-white">
+                <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
+            </button>
+            <div id="modalContent">
+                <!-- Step 1: Form -->
+                <div id="stepForm">
+                    <h3 id="modalTitle" class="text-2xl font-bold font-serif mb-2 gradient-text">Book Consultation</h3>
+                    <p id="modalSubtitle" class="text-gray-400 text-sm mb-6">Fill in your birth details for accurate astrological calculation.</p>
+                    <form id="birthForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <input type="hidden" id="serviceInput">
+                        <input type="hidden" id="planInput">
+                        <input type="hidden" id="amountInput">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Full Name</label>
+                            <input type="text" id="userName" required class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-300 mb-1">Phone Number</label>
+                                <input type="tel" id="userPhone" required class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-300 mb-1">Email</label>
+                                <input type="email" id="userEmail" required class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-300 mb-1">Date of Birth</label>
+                                <input type="date" id="userDob" required class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-300 mb-1">Time of Birth</label>
+                                <input type="time" id="userTob" required class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Place of Birth</label>
+                            <input type="text" id="userPob" required placeholder="City, State, Country" class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-300 mb-1">Specific Question or Concern</label>
+                            <textarea id="userQuestion" rows="3" placeholder="Briefly describe what you'd like guidance on..." class="w-full px-4 py-3 rounded-xl glass-panel border border-purple-500/30 text-white focus:outline-none focus:border-purple-500 text-sm"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold shadow-lg shadow-purple-600/30 hover:scale-[1.01] transition-all">
+                            Proceed to Payment
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Step 2: QR Code -->
+                <div id="stepQR" style="display: none;" class="text-center py-4">
+                    <h3 class="text-2xl font-bold font-serif mb-2 gradient-text">Complete Payment</h3>
+                    <p class="text-gray-300 text-sm mb-6">Scan the QR code below via GPay/UPI to pay <span id="displayAmount" class="font-bold text-amber-400"></span></p>
+                    <div class="bg-white p-2 rounded-2xl w-48 h-48 mx-auto mb-6 flex items-center justify-center">
+                        <img src="https://customer-assets-m6fa6gv7.emergentagent.net/job_75a5be03-96d6-4fae-93a3-725794e3f586/artifacts/rznj1s57_file_0.jpg" alt="Payment QR" class="w-44 h-44 object-contain">
+                    </div>
+                    <button onclick="confirmPayment()" class="w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-900/40 transition-all">
+                        I Have Completed Payment
+                    </button>
+                </div>
+
+                <!-- Step 3: Done -->
+                <div id="stepDone" style="display: none;" class="text-center py-8">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-6">
+                        <iconify-icon icon="solar:check-circle-bold"></iconify-icon>
+                    </div>
+                    <h3 class="text-2xl font-bold font-serif mb-2 text-white">Booking Confirmed!</h3>
+                    <p class="text-gray-300 text-sm mb-6 leading-relaxed">Thank you for booking with Prarabbdha. Your details and payment confirmation have been successfully submitted. Our astrologer will reach out to you shortly.</p>
+                    <button onclick="closeModal()" class="px-8 py-3 rounded-xl bg-purple-600 text-white font-semibold text-sm">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- STEP 3: Confirmation -->
-    <div id="stepDone" style="padding:28px;padding-top:40px;text-align:center;">
-      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#4ade80,#06b6d4);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 40px rgba(74,222,128,0.3);"><iconify-icon icon="lucide:check" style="color:#fff;font-size:36px;"></iconify-icon></div>
-      <h3 style="color:#fff;font-size:30px;font-weight:900;margin-bottom:10px;line-height:1.25;">Thank You for<br><span class="gradient-text">Choosing PRARABBDHA.COM</span></h3>
-      <p style="color:rgba(255,255,255,0.45);font-size:14px;margin-bottom:6px;" id="doneGreet"></p>
-      <div style="margin:20px auto;max-width:320px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:38px;height:38px;border-radius:10px;background:rgba(124,58,237,0.2);display:flex;align-items:center;justify-content:center;"><iconify-icon icon="lucide:clock" style="color:#a78bfa;font-size:18px;"></iconify-icon></div><div style="text-align:left;"><p style="color:rgba(255,255,255,0.4);font-size:11px;margin:0;">Expected Response</p><p style="color:#fff;font-size:14px;font-weight:700;margin:0;">Within 48 Hours</p></div></div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;"><div style="width:38px;height:38px;border-radius:10px;background:rgba(6,182,212,0.2);display:flex;align-items:center;justify-content:center;"><iconify-icon icon="lucide:mail" style="color:#06b6d4;font-size:18px;"></iconify-icon></div><div style="text-align:left;"><p style="color:rgba(255,255,255,0.4);font-size:11px;margin:0;">Confirmation sent to</p><p style="color:#fff;font-size:13px;font-weight:600;margin:0;" id="doneEmail"></p></div></div>
-        <div style="display:flex;align-items:center;gap:12px;"><div style="width:38px;height:38px;border-radius:10px;background:rgba(236,72,153,0.2);display:flex;align-items:center;justify-content:center;"><iconify-icon icon="lucide:sparkles" style="color:#ec4899;font-size:18px;"></iconify-icon></div><div style="text-align:left;"><p style="color:rgba(255,255,255,0.4);font-size:11px;margin:0;">Service Booked</p><p style="color:#fff;font-size:13px;font-weight:600;margin:0;" id="doneService"></p></div></div>
-      </div>
-      <p style="color:rgba(255,255,255,0.25);font-size:12px;margin-bottom:20px;line-height:1.6;">Our astrologer will reach out to you soon.<br>Thank you for booking with PRARABBDHA.COM &#10022;</p>
-      <button id="closeDone" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(to right,#7c3aed,#ec4899);color:#fff;font-weight:600;border:none;cursor:pointer;font-size:14px;">Close</button>
-    </div>
-
-  </div></div>
-
-  <script>
-    emailjs.init('qCHGM-Ou28ahOqsR1');
-    var storedName='',storedEmail='',storedPhone='',storedGender='',storedDob='',storedTob='',storedPlace='',storedQuestions='';
-    (function(){var sl=document.getElementById('starsLayer');for(var i=0;i<250;i++){var s=document.createElement('div');s.className='star';var sz=Math.random()*2.8+0.4;s.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--dur:'+(Math.random()*3+2)+'s;--min-o:'+(Math.random()*0.3+0.1)+';--max-o:'+(Math.random()*0.5+0.5)+';animation-delay:'+Math.random()*5+'s;';sl.appendChild(s);}})();
-    var curService='',curPlan='',curAmount=0;
-    function fmt(n){return '\u20B9'+n.toLocaleString('en-IN');}
-    document.addEventListener('click',function(e){var btn=e.target.closest('.price-btn');if(btn){curService=btn.getAttribute('data-service');curPlan=btn.getAttribute('data-plan');curAmount=parseInt(btn.getAttribute('data-amount'));var m=curPlan.match(/(\d)/);var qc=m?parseInt(m[1]):1;document.getElementById('mService').textContent=curService;document.getElementById('mPlanText').textContent=curPlan;document.getElementById('mAmountText').textContent=fmt(curAmount);var qb=document.getElementById('questionsBox');qb.innerHTML='';for(var i=1;i<=qc;i++){var d=document.createElement('div');d.innerHTML='<label style="font-size:11px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Question '+i+' *</label><textarea class="form-input" rows="2" placeholder="What do you want to know?" required style="resize:none;"></textarea>';qb.appendChild(d);}document.getElementById('stepForm').style.display='block';document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='none';document.getElementById('birthForm').reset();document.getElementById('modalOverlay').classList.add('active');document.body.style.overflow='hidden';}});
-    document.getElementById('birthForm').addEventListener('submit',function(e){
-      e.preventDefault();
-      storedName=document.getElementById('fName').value;storedEmail=document.getElementById('fEmail').value;storedPhone=document.getElementById('fPhone').value;storedDob=document.getElementById('fDob').value;storedTob=document.getElementById('fTob').value;storedPlace=document.getElementById('fPlace').value;storedGender=document.getElementById('fGender').value;
-      var qTexts=[];document.querySelectorAll('#questionsBox textarea').forEach(function(t,i){if(t.value)qTexts.push('Q'+(i+1)+': '+t.value);});storedQuestions=qTexts.join('\n');
-      document.getElementById('qServiceText').textContent=curService+' \u2014 '+curPlan;document.getElementById('qAmountText').textContent=fmt(curAmount);
-      document.getElementById('stepForm').style.display='none';document.getElementById('stepQR').style.display='block';document.getElementById('stepDone').style.display='none';
-      // ── Send booking details to astrologer immediately when customer proceeds to pay ──
-      emailjs.send('service_pu1auin','template_by2ekok',{
-        name:storedName||'Customer',
-        email:storedEmail,
-        phone:storedPhone,
-        gender:storedGender,
-        dob:storedDob,
-        tob:storedTob,
-        place:storedPlace,
-        service:curService,
-        plan:curPlan,
-        amount:fmt(curAmount),
-        questions:storedQuestions
-      });
-      document.getElementById('emailError').style.display='none';document.getElementById('sendEmailBtn').style.display='flex';
-      document.querySelector('.modal-box').scrollTop=0;
-    });
-    document.getElementById('sendEmailBtn').addEventListener('click',function(){
-      var btn=this;
-      if(!storedEmail){document.getElementById('emailError').style.display='block';document.getElementById('emailError').textContent='No email provided. Please go back and add your email.';return;}
-      btn.innerHTML='<iconify-icon icon="lucide:loader-2" style="animation:spin 1s linear infinite;"></iconify-icon> Confirming...';btn.disabled=true;btn.style.opacity='0.7';
-      Promise.all([
-        emailjs.send('service_pu1auin','template_7sls77b',{name:storedName||'Customer',email:storedEmail,phone:storedPhone,service:curService,plan:curPlan,amount:fmt(curAmount)}),
-        emailjs.send('service_pu1auin','template_by2ekok',{name:storedName||'Customer',email:storedEmail,phone:storedPhone,gender:storedGender||'Not specified',dob:storedDob,tob:storedTob,place:storedPlace,service:curService,plan:curPlan,amount:fmt(curAmount),questions:storedQuestions||'No questions provided'})
-      ]).then(function(){
-        document.getElementById('doneGreet').textContent='Thank you, '+(storedName||'there')+'! Your booking is confirmed.';        // Show booking toast notification
-        document.getElementById('toastName').textContent=storedName||'Customer';
-        document.getElementById('toastService').textContent=curService+' \u2014 '+curPlan;
-        document.getElementById('toastAmount').textContent=fmt(curAmount);
-        var toast=document.getElementById('bookingToast');
-        toast.classList.add('show');
-        setTimeout(function(){toast.classList.remove('show');},6000);
-        document.getElementById('doneEmail').textContent=storedEmail;
-        document.getElementById('doneService').textContent=curService+' \u2014 '+curPlan;
-        document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='block';
-        document.querySelector('.modal-box').scrollTop=0;
-        btn.innerHTML='<iconify-icon icon="lucide:check-circle"></iconify-icon> Payment Done \u2014 Confirm Booking';btn.disabled=false;btn.style.opacity='1';
-      },function(){
-        document.getElementById('emailError').style.display='block';document.getElementById('emailError').textContent='Could not send email. Please try again.';
-        btn.innerHTML='<iconify-icon icon="lucide:check-circle"></iconify-icon> Payment Done \u2014 Confirm Booking';btn.disabled=false;btn.style.opacity='1';
-      });
-    });    function stopPaymentPolling(){/* no-op */}
-    function closeM(){stopPaymentPolling();document.getElementById('modalOverlay').classList.remove('active');document.body.style.overflow='';document.getElementById('stepForm').style.display='block';document.getElementById('stepQR').style.display='none';document.getElementById('stepDone').style.display='none';}
-    document.getElementById('modalClose').addEventListener('click',closeM);
-    document.getElementById('closeQR').addEventListener('click',closeM);
-    document.getElementById('closeDone').addEventListener('click',closeM);
-    document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeM();});
-    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM();});
-    document.getElementById('menuBtn').addEventListener('click',function(){document.getElementById('mobileMenu').classList.add('open');});
-    document.getElementById('closeMenu').addEventListener('click',function(){document.getElementById('mobileMenu').classList.remove('open');});
-    document.querySelectorAll('.mobile-link').forEach(function(l){l.addEventListener('click',function(){document.getElementById('mobileMenu').classList.remove('open');});});
-    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
-  </script>
-
-  <script>
-  /* ═══════════════════════════════════════════════════════════════════
-     PRARABBDHA — Barred Spiral Galaxy (Full-Page, Pre-Rendered)
-     Architecture: offscreen canvas rendered once → rotated each frame
-     ~25 000+ particles: nuclear cluster, bulge, bar, 4 spiral arms,
-     H-II regions, dust lanes, interarm stars, outer stellar halo
-  ═══════════════════════════════════════════════════════════════════ */
-  (function(){
-    var cvs = document.getElementById('galaxyCanvas');
-    var ctx  = cvs.getContext('2d');
-    var offCvs = null;
-    var ROT = 0;
-
-    /* helpers */
-    function rv(a,b){ return a + Math.random()*(b-a); }
-    function ri(a,b){ return (rv(a,b))|0; }
-
-    /* Pre-render entire galaxy to offscreen canvas centred at (oR,oR) */
-    function buildGalaxy(oc, CR){
-      var c  = oc.getContext('2d');
-      var cx = oc.width/2, cy = oc.height/2;
-      c.clearRect(0,0,oc.width,oc.height);
-      c.save();
-      c.translate(cx, cy);
-
-      /* ── util ── */
-      function dot(px,py,sz,col){
-        c.fillStyle=col;
-        c.beginPath(); c.arc(px,py,sz,0,Math.PI*2); c.fill();
-      }
-      function radGlow(px,py,r0,r1,c0,c1){
-        var g=c.createRadialGradient(px,py,r0,px,py,r1);
-        g.addColorStop(0,c0); g.addColorStop(1,c1);
-        c.fillStyle=g; c.beginPath(); c.arc(px,py,r1,0,Math.PI*2); c.fill();
-      }
-
-      /* ─────────────────────────────────────────────────
-         1. OUTER DIFFUSE HALO / STELLAR DISC
-      ───────────────────────────────────────────────── */
-      radGlow(0,0,CR*0.04,CR*1.7,'rgba(210,190,150,0.065)','transparent');
-      radGlow(0,0,CR*0.12,CR*1.1,'rgba(160,175,220,0.04)','transparent');
-
-      /* ─────────────────────────────────────────────────
-         2. BULGE  (spheroidal, warm old stars)
-      ───────────────────────────────────────────────── */
-      for(var i=0;i<6000;i++){
-        var rr=Math.pow(Math.random(),1.55)*CR*0.30;
-        var aa=rv(0,Math.PI*2);
-        var br=rv(0.18,0.78);
-        dot(Math.cos(aa)*rr, Math.sin(aa)*rr*0.80,
-            rv(0.20,2.0),
-            'rgba('+ri(228,255)+','+ri(168,228)+','+ri(55,145)+','+br.toFixed(2)+')');
-      }
-
-      /* ─────────────────────────────────────────────────
-         3. CENTRAL BAR  (elongated through nucleus)
-      ───────────────────────────────────────────────── */
-      for(var i=0;i<2500;i++){
-        var t=rv(-1,1);
-        var bL=CR*0.34, bW=CR*0.040*(1-Math.abs(t)*0.55);
-        dot(t*bL+rv(-bW,bW), rv(-bW,bW)*0.42,
-            rv(0.18,1.5),
-            'rgba(255,'+ri(190,232)+','+ri(85,150)+','+rv(0.18,0.58).toFixed(2)+')');
-      }
-
-      /* ─────────────────────────────────────────────────
-         4. FOUR SPIRAL ARMS
-         Primary:   arms 0+1  (denser, wider, more prominent)
-         Secondary: arms 2+3  (thinner, offset 90°)
-      ───────────────────────────────────────────────── */
-      var ARMS=[
-        {off:0,           k:3.0, n:8000, w:1.00, scatter:1.00},
-        {off:Math.PI,     k:3.0, n:8000, w:1.00, scatter:1.00},
-        {off:Math.PI*0.5, k:3.4, n:4200, w:0.58, scatter:0.80},
-        {off:Math.PI*1.5, k:3.4, n:4200, w:0.58, scatter:0.80}
-      ];
-
-      for(var ai=0;ai<4;ai++){
-        var A=ARMS[ai];
-        for(var i=0;i<A.n;i++){
-          var t=Math.pow(i/A.n, 0.70);
-          var rr=t*CR*0.98;
-          var baseA=A.off+Math.log(1+t*6.0)*A.k;
-          var scat=CR*0.052*(0.30+t*1.15)*A.scatter;
-          var aa=baseA+(Math.random()-0.5)*scat/Math.max(rr,3)+(Math.random()-0.5)*0.44;
-
-          /* colour: warm golden near core → blue-white outer clusters */
-          var warm=Math.pow(Math.max(0,0.26-t),2.3)*3.8;
-          var alpha=rv(0.12,0.74)*(1-t*0.30)*A.w;
-          dot(Math.cos(aa)*rr, Math.sin(aa)*rr,
-              rv(0.10,1.35)*A.w,
-              'rgba('+ri(155+warm*82,255)+','+ri(195+warm*44,255)+',248,'+alpha.toFixed(2)+')');
-
-          /* dust lanes: dark radial glows just off the bright arm */
-          if(Math.random()<0.095){
-            var da=baseA+0.22+rv(-0.14,0.14);
-            var dr=rr*rv(0.85,1.16);
-            var dp=rv(0.04,0.14);
-            radGlow(Math.cos(da)*dr, Math.sin(da)*dr,
-                    0, rv(5,18),
-                    'rgba(3,1,0,'+dp+')','transparent');
-          }
-
-          /* H-II regions: bright blue star-forming nebulae */
-          if(Math.random()<0.0072 && t>0.10 && t<0.90){
-            var hr=rv(4,13);
-            radGlow(Math.cos(aa)*rr+rv(-3,3), Math.sin(aa)*rr+rv(-3,3),
-                    0, hr,
-                    'rgba(170,215,255,0.88)','transparent');
-            /* tiny bright cluster core */
-            dot(Math.cos(aa)*rr, Math.sin(aa)*rr,
-                rv(0.4,1.2),
-                'rgba(220,240,255,0.95)');
-          }
+    <!-- JavaScript -->
+    <script>
+        const starsContainer = document.getElementById('starsContainer');
+        const starCount = 100;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.width = `${Math.random() * 2 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
+            starsContainer.appendChild(star);
         }
-      }
 
-      /* ─────────────────────────────────────────────────
-         5. INTERARM STARS  (diffuse disc population)
-      ───────────────────────────────────────────────── */
-      for(var i=0;i<3500;i++){
-        var rr=rv(CR*0.06,CR*0.96);
-        var aa=rv(0,Math.PI*2);
-        dot(Math.cos(aa)*rr, Math.sin(aa)*rr,
-            rv(0.08,0.62),
-            'rgba(172,190,245,'+rv(0.04,0.19).toFixed(2)+')');
-      }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
 
-      /* ─────────────────────────────────────────────────
-         6. OUTER STELLAR HALO  (ancient pop. II stars)
-      ───────────────────────────────────────────────── */
-      for(var i=0;i<3500;i++){
-        var rr=CR*rv(0.42,1.50);
-        var aa=rv(0,Math.PI*2);
-        dot(Math.cos(aa)*rr, Math.sin(aa)*rr,
-            rv(0.06,0.52),
-            'rgba(150,175,255,'+rv(0.025,0.14).toFixed(2)+')');
-      }
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-      /* ─────────────────────────────────────────────────
-         7. CORE BLOOM  (multi-layer: bulge glow → nucleus)
-      ───────────────────────────────────────────────── */
-      /* broad warm bulge glow */
-      radGlow(0,0,0,CR*0.40,'rgba(255,240,180,0.52)','transparent');
-      /* inner golden disc */
-      radGlow(0,0,0,CR*0.18,'rgba(255,248,195,0.78)','rgba(255,230,140,0)');
-      /* tight nuclear brilliance */
-      radGlow(0,0,0,CR*0.052,'rgba(255,255,245,0.96)','rgba(255,250,200,0)');
-      /* pinpoint nucleus */
-      radGlow(0,0,0,CR*0.012,'rgba(255,255,255,1)','rgba(255,255,240,0)');
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
 
-      /* ─────────────────────────────────────────────────
-         8. NUCLEAR STAR CLUSTER  (densest centre)
-      ───────────────────────────────────────────────── */
-      for(var i=0;i<800;i++){
-        var rr=Math.pow(Math.random(),3.0)*CR*0.022;
-        var aa=rv(0,Math.PI*2);
-        dot(Math.cos(aa)*rr, Math.sin(aa)*rr,
-            rv(0.3,2.2),
-            'rgba(255,'+ri(245,255)+','+ri(190,240)+','+rv(0.55,1.0).toFixed(2)+')');
-      }
+        menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+        closeMenu.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
 
-      c.restore();
-    }
-
-    /* ── animation state ── */
-    var PULSE  = 0;     /* core brightness oscillator  */
-    var BREATH = 0;     /* scale breathe oscillator    */
-    var CR_NOW = 1;     /* cached galaxy radius        */
-
-    /* ── init / resize ── */
-    function resize(){
-      var W = cvs.parentElement.offsetWidth;
-      var H = cvs.parentElement.offsetHeight;
-      cvs.width  = W;
-      cvs.height = H;
-      CR_NOW = Math.sqrt(W*W+H*H) * 0.62;
-      var oSz = Math.ceil(CR_NOW * 2.6);
-      offCvs = document.createElement('canvas');
-      offCvs.width  = oSz;
-      offCvs.height = oSz;
-      buildGalaxy(offCvs, CR_NOW);
-    }
-
-    resize();
-    var rt;
-    window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(resize,260); });
-
-    /* ── animation loop ── */
-    function frame(){
-      if(!offCvs){ requestAnimationFrame(frame); return; }
-
-      var W  = cvs.width, H = cvs.height;
-      var CR = CR_NOW;
-
-      ctx.clearRect(0,0,W,H);
-
-      /* tick oscillators */
-      PULSE  += 0.050;   /* ~2.1 s per pulse cycle  */
-      BREATH += 0.009;   /* ~11.6 s per breathe     */
-
-      var bs  = 1.0 + Math.sin(BREATH) * 0.024;   /* breathe scale factor  */
-      var pls = 0.55 + Math.sin(PULSE)  * 0.45;   /* pulse 0.10 … 1.00     */
-
-      ctx.save();
-
-      /* ── 1. Galaxy transform: tilt + perspective + breathe + rotate ── */
-      ctx.translate(W * 0.5, H * 0.5);
-      ctx.rotate(-0.50);
-      ctx.scale(bs, 0.54 * bs);
-      ctx.rotate(ROT);
-
-      /* ── 2. Pre-rendered star field ── */
-      ctx.drawImage(offCvs, -offCvs.width * 0.5, -offCvs.height * 0.5);
-
-      /* ── 3. Arm energy wisps (glow tracers flowing along each arm) ── */
-      for(var arm = 0; arm < 4; arm++){
-        var armOff = arm * Math.PI * 0.5;
-        var kWind  = (arm < 2) ? 3.0 : 3.4;
-
-        for(var step = 0; step < 24; step++){
-          var t   = step / 24;
-          var rr  = (0.07 + t * 0.85) * CR;
-          /* inner ring travels faster for "flowing outward" illusion */
-          var ang = armOff + Math.log(1 + t * 6.0) * kWind + ROT * 2.6 * (1 - t * 0.5);
-
-          var wx = Math.cos(ang) * rr;
-          var wy = Math.sin(ang) * rr;
-
-          /* travelling wave along arm + global pulse */
-          var wave = 0.5 + 0.5 * Math.sin(PULSE * 1.5 - t * 20.0 + arm * 1.571);
-          var bright = Math.sin(t * Math.PI) * wave * pls * 0.30;
-          if(bright < 0.018) continue;
-
-          var wr = CR * 0.030 * (0.4 + t * 0.9);
-          var wg = ctx.createRadialGradient(wx,wy,0, wx,wy,wr);
-          wg.addColorStop(0,   'rgba(185,218,255,' + Math.min(bright * 2.0, 0.60).toFixed(2) + ')');
-          wg.addColorStop(0.45,'rgba(155,200,255,' + (bright * 0.7).toFixed(2) + ')');
-          wg.addColorStop(1,   'transparent');
-          ctx.fillStyle = wg;
-          ctx.beginPath(); ctx.arc(wx,wy,wr,0,Math.PI*2); ctx.fill();
+        function openModal(service, plan, amount) {
+            document.getElementById('serviceInput').value = service;
+            document.getElementById('planInput').value = plan;
+            document.getElementById('amountInput').value = amount;
+            document.getElementById('modalTitle').innerText = `Book: ${service}`;
+            document.getElementById('modalSubtitle').innerText = `Plan: ${plan} (₹${amount})`;
+            
+            document.getElementById('stepForm').style.display = 'block';
+            document.getElementById('stepQR').style.display = 'none';
+            document.getElementById('stepDone').style.display = 'none';
+            
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById('modalOverlay').classList.add('flex');
         }
-      }
 
-      /* ── 4. Animated core pulse (redrawn every frame on top) ── */
-      /* outer warm bloom */
-      var cg1 = ctx.createRadialGradient(0,0,0, 0,0, CR*0.24);
-      cg1.addColorStop(0,   'rgba(255,252,218,' + (0.74*pls).toFixed(2) + ')');
-      cg1.addColorStop(0.28,'rgba(255,238,155,' + (0.42*pls).toFixed(2) + ')');
-      cg1.addColorStop(0.62,'rgba(255,210, 95,' + (0.11*pls).toFixed(2) + ')');
-      cg1.addColorStop(1,   'transparent');
-      ctx.fillStyle = cg1;
-      ctx.beginPath(); ctx.arc(0,0,CR*0.24,0,Math.PI*2); ctx.fill();
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('flex');
+            document.getElementById('modalOverlay').classList.add('hidden');
+        }
 
-      /* tight nuclear glow */
-      var cg2 = ctx.createRadialGradient(0,0,0, 0,0, CR*0.042);
-      cg2.addColorStop(0,  'rgba(255,255,245,' + Math.min(0.90*pls+0.10,1).toFixed(2) + ')');
-      cg2.addColorStop(0.5,'rgba(255,248,205,' + (0.60*pls).toFixed(2) + ')');
-      cg2.addColorStop(1,  'transparent');
-      ctx.fillStyle = cg2;
-      ctx.beginPath(); ctx.arc(0,0,CR*0.042,0,Math.PI*2); ctx.fill();
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const amount = document.getElementById('amountInput').value;
+            document.getElementById('displayAmount').innerText = `₹${amount}`;
+            
+            document.getElementById('stepForm').style.display = 'none';
+            document.getElementById('stepQR').style.display = 'block';
+        }
 
-      ctx.restore();
-
-      ROT += 0.00085;   /* ~123 s per full revolution — visibly spinning */
-      requestAnimationFrame(frame);
-    }
-    frame();
-  })();
-  /* ═══════════════════════════════════════════════════════════════════ */
-  </script>
-
-  <!-- ── Booking Notification Toast ── -->
-  <div id="bookingToast" class="booking-toast">
-    <div class="toast-bar"></div>
-    <div class="toast-body">
-      <div class="toast-header">
-        <div class="toast-title">
-          <span class="toast-pulse"></span>
-          New Booking Received!
-        </div>
-        <button class="toast-close" onclick="document.getElementById('bookingToast').classList.remove('show')">&#215;</button>
-      </div>
-      <div class="toast-row">
-        <div class="toast-icon" style="background:rgba(124,58,237,0.2);">
-          <iconify-icon icon="lucide:user" style="color:#a78bfa;font-size:16px;"></iconify-icon>
-        </div>
-        <div>
-          <div class="toast-label">Customer</div>
-          <div class="toast-value" id="toastName">—</div>
-        </div>
-      </div>
-      <div class="toast-row">
-        <div class="toast-icon" style="background:rgba(6,182,212,0.2);">
-          <iconify-icon icon="lucide:sparkles" style="color:#06b6d4;font-size:16px;"></iconify-icon>
-        </div>
-        <div>
-          <div class="toast-label">Service</div>
-          <div class="toast-value" id="toastService">—</div>
-        </div>
-      </div>
-      <div class="toast-row" style="margin-bottom:0;">
-        <div class="toast-icon" style="background:rgba(236,72,153,0.2);">
-          <iconify-icon icon="lucide:indian-rupee" style="color:#ec4899;font-size:16px;"></iconify-icon>
-        </div>
-        <div>
-          <div class="toast-label">Amount</div>
-          <div class="toast-value" id="toastAmount">—</div>
-        </div>
-      </div>
-    </div>
-  </div>  <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/919999999999" target="_blank" rel="noopener"
-     style="position:fixed;bottom:88px;right:24px;z-index:9998;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(37,211,102,0.4);transition:transform 0.2s,box-shadow 0.2s;"
-     onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 32px rgba(37,211,102,0.55)'"
-     onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 24px rgba(37,211,102,0.4)'">
-    <iconify-icon icon="logos:whatsapp-icon" style="font-size:28px;"></iconify-icon>
-  </a>
-
+        function confirmPayment() {
+            document.getElementById('stepQR').style.display = 'none';
+            document.getElementById('stepDone').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
